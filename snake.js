@@ -33,7 +33,7 @@
   Snake.prototype._moveTail = function () {
     for (var i = this.segments.length; i > 1; i--) {
       this.segments[i] = this.segments[i-1]
-    };
+    }
   };
 
   Snake.prototype.segmentsIncludes = function (pos) {
@@ -45,6 +45,40 @@
     return false;
   };
 
+
+  var Board = window.SnakeGame.Board = function(){
+    this.snake = new Snake();
+    this.grid = [];
+    // this.apples = [];
+    this.setupBoard();
+  };
+
+  Board.GRIDSIZE = 9;
+
+  Board.prototype.setupBoard = function () {
+    for (var i = 0; i < Board.GRIDSIZE; i++) {
+      var row = [];
+      for (var j = 0; j < Board.GRIDSIZE; j++) {
+        row.push(".");
+
+      };
+      this.grid.push(row);
+    };
+  };
+
+  Board.prototype.render = function () {
+    for (var i = 0; i < Board.GRIDSIZE; i++) {
+      var row = "";
+      for (var j = 0; j < Board.GRIDSIZE; j++) {
+        if (this.snake.segmentsIncludes([i,j])){
+          row += "S";
+        } else {
+          row += ".";
+        };
+      };
+      console.log(row);
+    };
+  };
 
   var Coord = window.SnakeGame.Coord = function(pos){
     this.pos = pos;
