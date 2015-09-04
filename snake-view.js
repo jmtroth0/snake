@@ -23,7 +23,7 @@
       return;
     }
 
-    this.board.snake.move();
+    this.board.step();
     this.$el.empty();
     this.$el.append(this.board.render());
   };
