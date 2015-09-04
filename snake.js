@@ -10,10 +10,10 @@
     this._moveTail();
     switch(this.dir){
     case "E":
-      this.segments[0].plus([0, -1]);
+      this.segments[0].plus([0, 1]);
       break;
     case "W":
-      this.segments[0].plus([0, 1]);
+      this.segments[0].plus([0, -1]);
       break;
     case "N":
       this.segments[0].plus([-1, 0]);
@@ -45,7 +45,6 @@
     return false;
   };
 
-
   var Board = window.SnakeGame.Board = function(){
     this.snake = new Snake();
     this.grid = [];
@@ -53,20 +52,25 @@
     this.setupBoard();
   };
 
-  Board.GRIDSIZE = 9;
+  Board.GRIDSIZE = 20;
 
   Board.prototype.setupBoard = function () {
     for (var i = 0; i < Board.GRIDSIZE; i++) {
       var row = [];
       for (var j = 0; j < Board.GRIDSIZE; j++) {
-        row.push(".");
+        row.push("null");
 
       };
       this.grid.push(row);
     };
   };
 
+  Board.prototype.isLost = function (){
+    return this.snake.segments[0].outOfBounds();
+  }
+
   Board.prototype.render = function () {
+    var view = "";
     for (var i = 0; i < Board.GRIDSIZE; i++) {
       var row = "";
       for (var j = 0; j < Board.GRIDSIZE; j++) {
@@ -76,8 +80,10 @@
           row += ".";
         };
       };
+      view += row + "\n"
       console.log(row);
     };
+    return view;
   };
 
   var Coord = window.SnakeGame.Coord = function(pos){
@@ -91,6 +97,13 @@
 
   Coord.prototype.equals = function(otherPos){
     return (this.pos[0] === otherPos[0] && this.pos[1] === otherPos[1]);
+  }
+
+  Coord.prototype.outOfBounds = function(){
+    return (this.pos[0] > Board.GRIDSIZE ||
+            this.pos[0] < 0 ||
+            this.pos[1] > Board.GRIDSIZE ||
+            this.pos[1] < 0 );
   }
 
 
