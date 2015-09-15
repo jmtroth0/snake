@@ -8,24 +8,24 @@
   }
 
   Snake.prototype.move = function () {
-    this._moveTail();
 
     switch(this.dir){
     case "E":
-      this.segments[0].plus([0, 1]);
+      this.segments.unshift(this.segments[0].plus([0, 1]));
       break;
     case "W":
-      this.segments[0].plus([0, -1]);
+      this.segments.unshift(this.segments[0].plus([0, -1]));
       break;
     case "N":
-      this.segments[0].plus([-1, 0]);
+      this.segments.unshift(this.segments[0].plus([-1, 0]));
       break;
     case "S":
-      this.segments[0].plus([1, 0]);
+      this.segments.unshift(this.segments[0].plus([1, 0]));
       break;
     default:
       break;
     };
+    this._moveTail();
   };
 
   Snake.prototype.turn = function (dir) {
@@ -33,14 +33,9 @@
   };
 
   Snake.prototype._moveTail = function () {
-    var grownSegment = new Coord(this.segments[this.segments.length - 1].pos.slice());
-    for (var i = this.segments.length; i > 1; i--) {
-
-    };
-    if (this.isGrowing){
-      this.segments.push(grownSegment);
-    };
-
+    if (!this.isGrowing){
+      this.segments.pop();
+    }
   };
 
   Snake.prototype.segmentsIncludes = function (pos) {
@@ -73,7 +68,18 @@
   };
 
   Board.prototype.isLost = function (){
-    return this.snake.segments[0].outOfBounds();
+    return this.snake.segments[0].outOfBounds() || this.ranIntoSelf();
+  };
+
+  Board.prototype.ranIntoSelf = function () {
+    for (var i = 0; i < this.snake.segments.length - 1; i++) {
+      for (var j = i + 1; j < this.snake.segments.length; j++) {
+        if (i !== j && this.snake.segments[i].equals(this.snake.segments[j].pos)){
+          return true;
+        }
+      }
+    }
+    return false;
   };
 
   Board.prototype.step = function(){
@@ -113,8 +119,7 @@
   }
 
   Coord.prototype.plus = function(offset){
-    this.pos[0] += offset[0];
-    this.pos[1] += offset[1];
+    return new Coord([this.pos[0] + offset[0], this.pos[1] + offset[1]]);
   }
 
   Coord.prototype.equals = function(otherPos){
