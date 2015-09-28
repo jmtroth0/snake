@@ -85,7 +85,6 @@
   };
 
   View.prototype.bindRestartEvents = function () {
-    debugger
     this.$rootEl.on('click', 'button#new-game', this.playAgain.bind(this));
     this.$rootEl.on('click', 'button#adjust-difficulty', this.toggleChallengeModal.bind(this));
     this.$rootEl.on('click', 'button#cancel-challenge-adjust', this.toggleChallengeModal.bind(this));
@@ -93,7 +92,7 @@
   };
 
   View.prototype.toggleChallengeModal = function () {
-    debugger;
+
     this.$rootEl.find('.challenge-modal').toggleClass('active');
   };
 
