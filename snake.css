@@ -21,3 +21,67 @@ body {
   text-align: center;
   font-weight: bold;
 }
+
+ul.grid {
+  margin: 0 auto;
+  position: relative;
+  border: 5px solid black;
+  width: 400px;
+  height: 400px;
+}
+
+ul.grid > li {
+  position: relative;
+  float: left;
+  width: 16px;
+  height: 16px;
+  border: 2px solid black;
+}
+
+ul.grid > li.snake-segment {
+  background: brown;
+}
+
+ul.grid > li.snake-apple {
+  background: green;
+}
+
+div.challenge-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+div.modal-screen {
+  width: 100%;
+  height: 100%;
+  background: #ccc;
+  opacity: .7;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+div.modal-content {
+  width: 100%;
+  height: 30%;
+  position: absolute;
+  top: 30%;
+  text-align: center;
+  display: block;
+  z-index: 10;
+}
+
+input#challenge {
+
+  font-size: 24px;
+}
+
+div.challenge-modal.active {
+  display: block;
+}

@@ -10,15 +10,28 @@
     <script src="./jquery-2.1.4.min.js"></script>
 
     <script src="./snake.js"></script>
+    <script src="./score-view.js"></script>
     <script src="./snake-view.js"></script>
-
     <h1>Snake</h1>
 
-    <pre class="snake-game"></pre>
+    <!-- <pre class="snake-game"></pre> -->
+    <div class="snake-game">
+      <div class="game-board"></div>
+      <div class="score-board"></div>
+      <div class="challenge-modal">
+        <div class="modal-content">
+          <label>Input a number between 1 and 10 (default is 7)</label>
+          <input id="challenge" type="number" min="1" max="10" />
+          <button id="submit-challenge">Submit</button>
+          <button id="cancel-challenge-adjust"></button>
+        </div>
+        <div class="modal-screen"></div>
+      </div>
+    </div>
 
     <script>
       $(function () {
-        new SnakeGame.View($(".snake-game"));;
+        new SnakeGame.View($("div.snake-game"));;
       });
     </script>
   </body>
