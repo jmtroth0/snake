@@ -2,15 +2,16 @@
   window.SnakeGame = window.SnakeGame || {};
 
   var View = window.SnakeGame.View = function(el, challenge){
-    this.challenge = parseInt(challenge) || 7
-    this.challenge = (500 - this.challenge * 50) / 2;
+    this.challenge = parseInt(challenge) || 5
+    this.challenge = (100 - this.challenge * 10);
     this.$rootEl = el;
     this.scoreBoard = new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board'));
     this.setupGame();
     this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
-  }
+  };
 
   View.prototype.setupGame = function () {
+    this.pause = false
     this.board = new window.SnakeGame.Board();
     this.$rootEl.find('div.game-board').html(this.render().$grid);
     this.bindEvents();
@@ -48,7 +49,7 @@
         location.removeClass('snake-apple');
         location.removeClass('snake-empty');
       } else if (this.board.apple.equals(this.changedPoses[i].pos)){
-        this.scoreBoard.incrementScore(10 - this.challenge / 25);
+        this.scoreBoard.incrementScore(10 - this.challenge / 10);
         location.addClass('snake-apple');
         location.removeClass('snake-empty');
       } else {
@@ -92,7 +93,6 @@
   };
 
   View.prototype.toggleChallengeModal = function () {
-
     this.$rootEl.find('.challenge-modal').toggleClass('active');
   };
 
@@ -100,8 +100,17 @@
     e.preventDefault();
     this.toggleChallengeModal();
     this.challenge = this.$rootEl.find('input#challenge').val()
-    this.challenge = (1000 - this.challenge * 100) / 2;
+    this.challenge = (100 - this.challenge * 10);
     this.playAgain();
+  };
+
+  View.prototype.togglePause = function () {
+    if (this.pause) {
+      this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
+    } else {
+      clearTimeout(this.refreshTimeoutId);
+    }
+    this.pause = !this.pause
   };
 
   View.prototype.playAgain = function () {
@@ -134,6 +143,8 @@
     case 40:
       this.board.snake.turn("S");
       break;
+    case 80:
+      this.togglePause();
     default:
       break;
     }
