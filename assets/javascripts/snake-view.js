@@ -3,7 +3,7 @@
 
   var View = window.SnakeGame.View = function(el, challenge){
     this.challenge = parseInt(challenge) || 7
-    this.challenge = (1000 - this.challenge * 100) / 2;
+    this.challenge = (500 - this.challenge * 50) / 2;
     this.$rootEl = el;
     this.scoreBoard = new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board'));
     this.setupGame();
@@ -48,7 +48,7 @@
         location.removeClass('snake-apple');
         location.removeClass('snake-empty');
       } else if (this.board.apple.equals(this.changedPoses[i].pos)){
-        this.scoreBoard.incrementScore(10 - this.challenge / 50);
+        this.scoreBoard.incrementScore(10 - this.challenge / 25);
         location.addClass('snake-apple');
         location.removeClass('snake-empty');
       } else {

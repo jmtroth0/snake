@@ -10,7 +10,7 @@
     this.over = false;
   };
 
-  Board.GRIDSIZE = 20;
+  Board.GRIDSIZE = 50;
 
   Board.prototype.setupBoard = function () {
     for (var i = 0; i < Board.GRIDSIZE; i++) {
@@ -53,7 +53,7 @@
       this.generateApple();
       changedPoses = changedPoses.concat(this.apple);
       this.snake.isGrowing = true;
-      this.finishGrowing = this.turns + 2;
+      this.finishGrowing = this.turns + 5;
     };
     if (this.finishGrowing === this.turns){
       this.snake.isGrowing = false;
