@@ -4,7 +4,7 @@ Snake in JS
 
 ## Running the game
 
-Either open `index.html` in a web browser, or [click here](https://www.jordanroth.xyz/snake) to play the live version.
+Either open `index.html` in a web browser, or [click here](http://www.jordanroth.xyz/snake) to play the live version.
 
 ## Controls
 
