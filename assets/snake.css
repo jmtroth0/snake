@@ -75,7 +75,7 @@ div.modal-content {
   z-index: 10;
 }
 
-form.modal-form {
+div.modal-form {
   background: white;
   width: 70%;
   margin: 0 auto;

@@ -9,6 +9,7 @@ Either open `index.html` in a web browser, or [click here](http://www.jordanroth
 ## Controls
 
 Arrow Keys
+'p' to pause
 
 ## Features
 

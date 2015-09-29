@@ -145,6 +145,7 @@
       break;
     case 80:
       this.togglePause();
+      break;
     default:
       break;
     }
