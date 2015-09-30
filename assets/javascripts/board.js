@@ -2,7 +2,7 @@
   window.SnakeGame = window.SnakeGame || {};
 
   var Board = window.SnakeGame.Board = function(){
-    this.snake = new window.SnakeGame.Snake();
+    this.snake = new window.SnakeGame.Snake([4,4], "E");
     this.grid = [];
     this.apple = randomCoord();
     this.setupBoard();
@@ -31,13 +31,18 @@
   };
 
   Board.prototype.isLost = function (){
-    return this.snake.segments[0].outOfBounds() || this.ranIntoSelf();
+    if (this.snake.segments[0].outOfBounds() || this.ranIntoSelf()) {
+      this.gameOverText = this.gameOverText || "Hit the wall";
+      return true;
+    };
+    return false;
   };
 
   Board.prototype.ranIntoSelf = function () {
     for (var i = 0; i < this.snake.segments.length - 1; i++) {
       for (var j = i + 1; j < this.snake.segments.length; j++) {
         if (i !== j && this.snake.segments[i].equals(this.snake.segments[j].pos)){
+          this.gameOverText = "Ran into self";
           return true;
         }
       }

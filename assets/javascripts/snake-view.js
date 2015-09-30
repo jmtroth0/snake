@@ -40,6 +40,7 @@
   }
 
   View.prototype.renderChangedPoses = function () {
+    console.log("hi");
     for (var i = 0; i < this.changedPoses.length; i++) {
       var x = this.changedPoses[i].pos[0]
       var y = this.changedPoses[i].pos[1]
@@ -80,6 +81,7 @@
     var $gameOver = $('<div class="game-over">')
     this.$rootEl.append($gameOver);
     $gameOver.html("<h1>Game Over!</h1>");
+    $gameOver.append("<p>" + this.board.gameOverText + "</p>");
     $gameOver.append("<button id='new-game'>Play Again?</button>");
     $gameOver.append("<button id='adjust-difficulty'>Adjust Difficulty?</button>");
     this.bindRestartEvents();
