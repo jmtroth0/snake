@@ -4,8 +4,8 @@
   var Snake = window.SnakeGame.Snake = function(pos, dir){
     this.dir = dir;
     this.segments = [new window.SnakeGame.Coord(pos),
-                     new window.SnakeGame.Coord(pos).plus([0,1]),
-                     new window.SnakeGame.Coord(pos).plus([0,2])]
+                     new window.SnakeGame.Coord(pos).plus([0,-1]),
+                     new window.SnakeGame.Coord(pos).plus([0,-2])]
     this.isGrowing = false;
   };
 
