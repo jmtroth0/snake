@@ -161,30 +161,38 @@
     e.preventDefault();
     switch (e.keyCode) {
     case 37:
+      if (this.board.snake1.dir === "E") { return }
       this.board.snake1.turn("W");
       break;
     case 38:
+      if (this.board.snake1.dir === "S") { return }
       this.board.snake1.turn("N");
       break;
     case 39:
+      if (this.board.snake1.dir === "W") { return }
       this.board.snake1.turn("E");
       break;
     case 40:
+      if (this.board.snake1.dir === "N") { return }
       this.board.snake1.turn("S");
       break;
     case 80:
       this.togglePause();
       break;
     case 87:
+      if (this.board.snake2.dir === "S") { return }
       this.board.snake2.turn("N");
       break;
     case 65:
+      if (this.board.snake2.dir === "E") { return }
       this.board.snake2.turn("W");
       break;
     case 68:
+      if (this.board.snake2.dir === "W") { return }
       this.board.snake2.turn("E");
       break;
     case 83:
+      if (this.board.snake2.dir === "N") { return }
       this.board.snake2.turn("S");
       break;
     default:
