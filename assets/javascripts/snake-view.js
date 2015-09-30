@@ -5,7 +5,8 @@
     this.challenge = parseInt(challenge) || 5
     this.challenge = (100 - this.challenge * 10);
     this.$rootEl = el;
-    this.scoreBoard = new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board'));
+    this.scoreBoard1 = new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board1'));
+    this.scoreBoard2 = new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board2'));
     this.setupGame();
     this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
   };
@@ -47,27 +48,35 @@
       var y = this.changedPoses[i].pos[1];
       var location = this.$grid.find('li').eq(x * this.board.grid.length + y)
       if (this.board.snake1.segmentsIncludes(this.changedPoses[i].pos)){
-        location.addClass('snake-segment1');
-        location.removeClass('snake-apple');
-        location.removeClass('snake-empty');
+        this.renderSnakePos(this.board.snake1, location, 'snake-segment1');
       } else if (this.board.snake2.segmentsIncludes(this.changedPoses[i].pos)){
-        location.addClass('snake-segment2');
-        location.removeClass('snake-apple');
-        location.removeClass('snake-empty');
+        this.renderSnakePos(this.board.snake2, location, 'snake-segment2');
       } else if (this.board.apple.equals(this.changedPoses[i].pos)){
-        this.scoreBoard.incrementScore(10 - this.challenge / 10);
-        location.addClass('snake-apple');
-        location.removeClass('snake-empty');
+        this.renderApplePos(location)
       } else {
-        location.removeClass('snake-segment1');
-        location.removeClass('snake-segment2');
-        location.removeClass('snake-apple');
-        location.addClass('snake-empty');
+        this.removeRenders(location);
       }
     }
     return this;
-  }
+  };
 
+  View.prototype.renderSnakePos = function (snake, location, cssClass){
+    location.addClass(cssClass);
+    location.removeClass('snake-apple');
+    location.removeClass('snake-empty');
+  };
+
+  View.prototype.renderApplePos = function (location){
+    location.addClass('snake-apple');
+    location.removeClass('snake-empty');
+  };
+
+  View.prototype.removeRenders = function (location) {
+    location.removeClass('snake-segment1');
+    location.removeClass('snake-segment2');
+    location.removeClass('snake-apple');
+    location.addClass('snake-empty');
+  };
 
   View.prototype.step = function () {
     this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
@@ -77,8 +86,20 @@
         return;
       } else {
         this.renderChangedPoses();
+        this.registerScores();
         this.changedPoses = this.board.step();
       }
+    }
+  };
+
+  View.prototype.registerScores = function () {
+    if (this.board.snake1.scoreChange){
+      this.scoreBoard1.incrementScore(10 - this.challenge / 10);
+      this.board.snake1.scoreChange = false
+    }
+    if (this.board.snake2.scoreChange){
+      this.scoreBoard2.incrementScore(10 - this.challenge / 10);
+      this.board.snake2.scoreChange = false
     }
   };
 

@@ -84,6 +84,7 @@
     snake.move(changedPoses);
     if (snake.segments[0].equals(this.apple.pos)){
       this.generateApple();
+      snake.scoreChange = true;
       changedPoses = changedPoses.concat(this.apple);
       snake.isGrowing = true;
       snake.finishGrowing = this.turns + 5;

@@ -8,7 +8,6 @@
   };
 
   ScoreView.prototype.restart = function () {
-    this.score = 0;
     this.placeScore();
   };
 

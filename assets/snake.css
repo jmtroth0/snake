@@ -45,10 +45,18 @@ ul.grid > li.snake-segment1 {
   transition: opacity .1s;
 }
 
+.score-board1 {
+  color: brown;
+}
+
 ul.grid > li.snake-segment2 {
   background: blue;
   opacity: 1;
   transition: opacity .1s;
+}
+
+.score-board2 {
+  color: blue;
 }
 
 ul.grid > li.snake-apple {
