@@ -5,7 +5,7 @@
     this.snake1 = new window.SnakeGame.Snake([4,4], "E", "red");
     this.snake2 = new window.SnakeGame.Snake([46,4], "E", "blue");
     this.grid = [];
-    this.apple = randomCoord();
+    this.apples = [randomCoord(), randomCoord()];
     this.setupBoard();
     this.turns = 0;
     this.over = false;
@@ -24,11 +24,11 @@
   };
 
   Board.prototype.generateApple = function () {
-    this.apple = randomCoord();
-    while (this.snake1.segmentsIncludes(this.apple.pos),
-           this.snake2.segmentsIncludes(this.apple.pos)){
+    this.apples.push(randomCoord());
+    while (this.snake1.segmentsIncludes(this.apples[this.apples.length-1].pos),
+           this.snake2.segmentsIncludes(this.apples[this.apples.length-1].pos)){
       var newApple = randomCoord();
-      this.apple = newApple
+      this.apples[this.apples.length-1] = newApple;
     };
   };
 
@@ -84,13 +84,16 @@
   Board.prototype.stepSnake = function(snake){
     var changedPoses = [];
     snake.move(changedPoses);
-    if (snake.segments[0].equals(this.apple.pos)){
-      this.generateApple();
-      snake.scoreChange = true;
-      changedPoses = changedPoses.concat(this.apple);
-      snake.isGrowing = true;
-      snake.finishGrowing = this.turns + 5;
-    };
+    for (var i = 0; i < this.apples.length; i++) {
+      if (snake.segmentsIncludes(this.apples[i].pos)) {
+        snake.scoreChange = true;
+        changedPoses = changedPoses.concat(this.apples[i]);
+        this.apples.splice(i, 1);
+        this.generateApple();
+        snake.isGrowing = true;
+        snake.finishGrowing = this.turns + 5;
+      };
+    }
     if (snake.finishGrowing === this.turns){
       snake.isGrowing = false;
     };

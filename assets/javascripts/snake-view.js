@@ -32,7 +32,8 @@
           this.$grid.append("<li class='snake-segment1 group'>");
         } else if (this.board.snake2.segmentsIncludes([i,j])){
           this.$grid.append("<li class='snake-segment2 group'>");
-        } else if (this.board.apple.equals([i,j])) {
+        } else if (this.board.apples[0].equals([i,j]) ||
+                   this.board.apples[1].equals([i,j])) {
           this.$grid.append("<li class='snake-apple group'>");
         } else {
           this.$grid.append("<li class='snake-empty group'>");
@@ -51,7 +52,8 @@
         this.renderSnakePos(this.board.snake1, location, 'snake-segment1');
       } else if (this.board.snake2.segmentsIncludes(this.changedPoses[i].pos)){
         this.renderSnakePos(this.board.snake2, location, 'snake-segment2');
-      } else if (this.board.apple.equals(this.changedPoses[i].pos)){
+      } else if (this.board.apples[0].equals(this.changedPoses[i].pos) ||
+                 this.board.apples[1].equals(this.changedPoses[i].pos)){
         this.renderApplePos(location)
       } else {
         this.removeRenders(location);
