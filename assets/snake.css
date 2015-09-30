@@ -35,14 +35,20 @@ ul.grid > li {
   float: left;
   width: 10px;
   height: 10px;
+  opacity: 0;
+  transition: opacity .1s;
 }
 
 ul.grid > li.snake-segment {
   background: brown;
+  opacity: 1;
+  transition: opacity .1s;
 }
 
 ul.grid > li.snake-apple {
   background: green;
+  opacity: 1;
+  transition: opacity .1s;
 }
 
 div.challenge-modal {

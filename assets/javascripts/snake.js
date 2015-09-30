@@ -3,7 +3,9 @@
 
   var Snake = window.SnakeGame.Snake = function(){
     this.dir = "E";
-    this.segments = [new window.SnakeGame.Coord([4,4])];
+    this.segments = [new window.SnakeGame.Coord([4,4]),
+                     new window.SnakeGame.Coord([4,3]),
+                     new window.SnakeGame.Coord([4,2])];
     this.isGrowing = false;
   };
 
