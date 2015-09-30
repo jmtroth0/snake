@@ -7,7 +7,6 @@
                      new window.SnakeGame.Coord(pos).plus([0,1]),
                      new window.SnakeGame.Coord(pos).plus([0,2])]
     this.isGrowing = false;
-    debugger
   };
 
   Snake.prototype.move = function (changedPoses) {
