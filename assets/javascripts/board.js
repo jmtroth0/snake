@@ -35,8 +35,7 @@
   Board.prototype.gameOver = function () {
     if (this.isLost(this.snake1) ||
         this.isLost(this.snake2) ||
-        this.ranIntoOther(this.snake1, this.snake2) ||
-        this.ranIntoOther(this.snake2, this.snake1)){
+        this.ranIntoOther()) {
       return true;
     };
     return false;
@@ -64,7 +63,20 @@
     return false;
   };
 
-  Board.prototype.ranIntoOther = function (snake, otherSnake) {
+  Board.prototype.ranIntoOther = function () {
+    var snake1Result = this.checkRanIntoOther(this.snake1, this.snake2);
+    var snake2Result = this.checkRanIntoOther(this.snake2, this.snake1);
+    if (snake1Result && snake2Result) {
+      this.gameOverText = "Draw";
+      return true;
+    } else if (snake1Result || snake2Result) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  Board.prototype.checkRanIntoOther = function (snake, otherSnake) {
     for (var i = 0; i < otherSnake.segments.length; i++) {
       if (otherSnake.segments[i].equals(snake.segments[0].pos)){
         this.gameOverText = snake.color + " ran into " + otherSnake.color;
