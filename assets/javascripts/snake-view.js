@@ -155,7 +155,6 @@
     this.$rootEl.find('button#submit-challenge').off();
     this.$rootEl.find('div.game-over').remove();
     this.board.over = false;
-    this.scoreBoard.restart();
   };
 
   View.prototype.handleKeyEvent = function (e) {
