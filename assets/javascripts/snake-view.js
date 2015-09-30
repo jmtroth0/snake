@@ -195,6 +195,10 @@
       if (this.board.snake2.dir === "N") { return }
       this.board.snake2.turn("S");
       break;
+    case 32:
+      this.gameOverProtocol();
+      this.playAgain();
+      break;
     default:
       break;
     }
