@@ -130,6 +130,7 @@
   };
 
   View.prototype.handleKeyEvent = function (e) {
+    e.preventDefault();
     switch (e.keyCode) {
     case 37:
       this.board.snake.turn("W");
