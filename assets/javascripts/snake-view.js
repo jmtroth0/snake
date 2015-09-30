@@ -86,7 +86,7 @@
         return;
       } else {
         this.renderChangedPoses();
-        this.registerScores();
+        // this.registerScores();
         this.changedPoses = this.board.step();
       }
     }
@@ -105,7 +105,9 @@
 
   View.prototype.gameOverProtocol = function () {
     this.board.over = true;
-    var $gameOver = $('<div class="game-over">')
+    if (this.board.snake1.lost) { this.scoreBoard2.incrementScore(10 - this.challenge / 10)}
+    if (this.board.snake2.lost) { this.scoreBoard1.incrementScore(10 - this.challenge / 10)}
+    var $gameOver = $('<div class="game-over">');
     this.$rootEl.append($gameOver);
     $gameOver.html("<h1>Game Over!</h1>");
     $gameOver.append("<p>" + this.board.gameOverText + "</p>");

@@ -45,6 +45,7 @@
   Board.prototype.isLost = function (snake){
     if (snake.segments[0].outOfBounds() || this.ranIntoSelf(snake)) {
       this.gameOverText = this.gameOverText || snake.color + " hit the wall";
+      snake.lost = true;
       return true;
     };
     return false;
@@ -55,6 +56,7 @@
       for (var j = i + 1; j < snake.segments.length; j++) {
         if (i !== j && snake.segments[i].equals(snake.segments[j].pos)){
           this.gameOverText = snake.color + " ran into self";
+          snake.lost = true;
           return true;
         }
       }
