@@ -39,8 +39,14 @@ ul.grid > li {
   transition: opacity .1s;
 }
 
-ul.grid > li.snake-segment {
+ul.grid > li.snake-segment1 {
   background: brown;
+  opacity: 1;
+  transition: opacity .1s;
+}
+
+ul.grid > li.snake-segment2 {
+  background: blue;
   opacity: 1;
   transition: opacity .1s;
 }

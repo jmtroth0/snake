@@ -27,8 +27,10 @@
 
     for (var i = 0; i < this.board.grid.length; i++) {
       for (var j = 0; j < this.board.grid[0].length; j++) {
-        if (this.board.snake.segmentsIncludes([i,j])){
-          this.$grid.append("<li class='snake-segment group'>");
+        if (this.board.snake1.segmentsIncludes([i,j])){
+          this.$grid.append("<li class='snake-segment1 group'>");
+        } else if (this.board.snake2.segmentsIncludes([i,j])){
+          this.$grid.append("<li class='snake-segment2 group'>");
         } else if (this.board.apple.equals([i,j])) {
           this.$grid.append("<li class='snake-apple group'>");
         } else {
@@ -40,13 +42,16 @@
   }
 
   View.prototype.renderChangedPoses = function () {
-    console.log("hi");
     for (var i = 0; i < this.changedPoses.length; i++) {
-      var x = this.changedPoses[i].pos[0]
-      var y = this.changedPoses[i].pos[1]
+      var x = this.changedPoses[i].pos[0];
+      var y = this.changedPoses[i].pos[1];
       var location = this.$grid.find('li').eq(x * this.board.grid.length + y)
-      if (this.board.snake.segmentsIncludes(this.changedPoses[i].pos)){
-        location.addClass('snake-segment');
+      if (this.board.snake1.segmentsIncludes(this.changedPoses[i].pos)){
+        location.addClass('snake-segment1');
+        location.removeClass('snake-apple');
+        location.removeClass('snake-empty');
+      } else if (this.board.snake2.segmentsIncludes(this.changedPoses[i].pos)){
+        location.addClass('snake-segment2');
         location.removeClass('snake-apple');
         location.removeClass('snake-empty');
       } else if (this.board.apple.equals(this.changedPoses[i].pos)){
@@ -54,7 +59,8 @@
         location.addClass('snake-apple');
         location.removeClass('snake-empty');
       } else {
-        location.removeClass('snake-segment');
+        location.removeClass('snake-segment1');
+        location.removeClass('snake-segment2');
         location.removeClass('snake-apple');
         location.addClass('snake-empty');
       }
@@ -66,8 +72,8 @@
   View.prototype.step = function () {
     this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
     if (!this.board.over) {
-      if (this.board.isLost()){
-        this.gameOver();
+      if (this.board.gameOver()){
+        this.gameOverProtocol();
         return;
       } else {
         this.renderChangedPoses();
@@ -76,7 +82,7 @@
     }
   };
 
-  View.prototype.gameOver = function () {
+  View.prototype.gameOverProtocol = function () {
     this.board.over = true;
     var $gameOver = $('<div class="game-over">')
     this.$rootEl.append($gameOver);
@@ -135,19 +141,31 @@
     e.preventDefault();
     switch (e.keyCode) {
     case 37:
-      this.board.snake.turn("W");
+      this.board.snake1.turn("W");
       break;
     case 38:
-      this.board.snake.turn("N");
+      this.board.snake1.turn("N");
       break;
     case 39:
-      this.board.snake.turn("E");
+      this.board.snake1.turn("E");
       break;
     case 40:
-      this.board.snake.turn("S");
+      this.board.snake1.turn("S");
       break;
     case 80:
       this.togglePause();
+      break;
+    case 87:
+      this.board.snake2.turn("N");
+      break;
+    case 65:
+      this.board.snake2.turn("W");
+      break;
+    case 68:
+      this.board.snake2.turn("E");
+      break;
+    case 83:
+      this.board.snake2.turn("S");
       break;
     default:
       break;

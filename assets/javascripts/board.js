@@ -2,7 +2,8 @@
   window.SnakeGame = window.SnakeGame || {};
 
   var Board = window.SnakeGame.Board = function(){
-    this.snake = new window.SnakeGame.Snake([4,4], "E");
+    this.snake1 = new window.SnakeGame.Snake([4,4], "E", "red");
+    this.snake2 = new window.SnakeGame.Snake([46,4], "E", "blue");
     this.grid = [];
     this.apple = randomCoord();
     this.setupBoard();
@@ -24,25 +25,36 @@
 
   Board.prototype.generateApple = function () {
     this.apple = randomCoord();
-    while (this.snake.segmentsIncludes(this.apple.pos)){
+    while (this.snake1.segmentsIncludes(this.apple.pos),
+           this.snake2.segmentsIncludes(this.apple.pos)){
       var newApple = randomCoord();
       this.apple = newApple
     };
   };
 
-  Board.prototype.isLost = function (){
-    if (this.snake.segments[0].outOfBounds() || this.ranIntoSelf()) {
-      this.gameOverText = this.gameOverText || "Hit the wall";
+  Board.prototype.gameOver = function () {
+    if (this.isLost(this.snake1) ||
+        this.isLost(this.snake2) ||
+        this.ranIntoOther(this.snake1, this.snake2) ||
+        this.ranIntoOther(this.snake2, this.snake1)){
       return true;
     };
     return false;
   };
 
-  Board.prototype.ranIntoSelf = function () {
-    for (var i = 0; i < this.snake.segments.length - 1; i++) {
-      for (var j = i + 1; j < this.snake.segments.length; j++) {
-        if (i !== j && this.snake.segments[i].equals(this.snake.segments[j].pos)){
-          this.gameOverText = "Ran into self";
+  Board.prototype.isLost = function (snake){
+    if (snake.segments[0].outOfBounds() || this.ranIntoSelf(snake)) {
+      this.gameOverText = this.gameOverText || snake.color + " hit the wall";
+      return true;
+    };
+    return false;
+  };
+
+  Board.prototype.ranIntoSelf = function (snake) {
+    for (var i = 0; i < snake.segments.length - 1; i++) {
+      for (var j = i + 1; j < snake.segments.length; j++) {
+        if (i !== j && snake.segments[i].equals(snake.segments[j].pos)){
+          this.gameOverText = snake.color + " ran into self";
           return true;
         }
       }
@@ -50,18 +62,34 @@
     return false;
   };
 
+  Board.prototype.ranIntoOther = function (snake, otherSnake) {
+    for (var i = 0; i < otherSnake.segments.length; i++) {
+      if (otherSnake.segments[i].equals(snake.segments[0].pos)){
+        this.gameOverText = snake.color + " ran into " + otherSnake.color;
+        return true;
+      }
+    }
+    return false;
+  };
+
   Board.prototype.step = function(){
-    var changedPoses = [];
-    this.snake.move(changedPoses);
+    var changedPoses1 = this.stepSnake(this.snake1);
+    var changedPoses2 = this.stepSnake(this.snake2);
     this.turns++;
-    if (this.snake.segments[0].equals(this.apple.pos)){
+    return changedPoses1.concat(changedPoses2);
+  };
+
+  Board.prototype.stepSnake = function(snake){
+    var changedPoses = [];
+    snake.move(changedPoses);
+    if (snake.segments[0].equals(this.apple.pos)){
       this.generateApple();
       changedPoses = changedPoses.concat(this.apple);
-      this.snake.isGrowing = true;
-      this.finishGrowing = this.turns + 5;
+      snake.isGrowing = true;
+      snake.finishGrowing = this.turns + 5;
     };
-    if (this.finishGrowing === this.turns){
-      this.snake.isGrowing = false;
+    if (snake.finishGrowing === this.turns){
+      snake.isGrowing = false;
     };
     return changedPoses;
   }

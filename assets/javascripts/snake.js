@@ -1,11 +1,12 @@
 (function(){
   window.SnakeGame = window.SnakeGame || {};
 
-  var Snake = window.SnakeGame.Snake = function(pos, dir){
+  var Snake = window.SnakeGame.Snake = function(pos, dir, color){
     this.dir = dir;
     this.segments = [new window.SnakeGame.Coord(pos),
                      new window.SnakeGame.Coord(pos).plus([0,-1]),
                      new window.SnakeGame.Coord(pos).plus([0,-2])]
+    this.color = color;
     this.isGrowing = false;
   };
 
