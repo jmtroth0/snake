@@ -8,7 +8,10 @@
       this.snakes.push(new window.SnakeGame.Snake(i));
     }
     this.grid = [];
-    this.apples = [randomCoord(), randomCoord()];
+    this.apples = [];
+    for (var i = 0; i < options.numSnakes; i++) {
+      this.apples.push(randomCoord());
+    }
     this.setupBoard();
     this.turns = 0;
     this.over = false;
@@ -114,7 +117,7 @@
   Board.prototype.generateApple = function () {
     this.apples.push(randomCoord());
     while (this.snakes.some(function (snake) {
-      return snake.segmentsIncludes(this.apples[this.apples.length - 1].pos)
+      return snake.segmentsIncludes(this.apples[this.apples.length - 1].pos);
     }.bind(this))){
       var newApple = randomCoord();
       this.apples[this.apples.length - 1] = newApple;

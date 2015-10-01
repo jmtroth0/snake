@@ -178,13 +178,17 @@
   View.prototype.gameOverProtocol = function () {
     this.board.over = true;
     this.incrementScores();
+    this.addGameOverBox();
+    this.bindRestartEvents();
+  };
+
+  View.prototype.addGameOverBox = function () {
     var $gameOver = $('<div class="game-over">');
-    this.$rootEl.append($gameOver);
     $gameOver.html("<h1>Game Over!</h1>");
     $gameOver.append("<p>" + this.board.gameOverText + "</p>");
     $gameOver.append("<button id='new-game'>Play Again?</button>");
     $gameOver.append("<button id='adjust-difficulty'>Adjust Difficulty?</button>");
-    this.bindRestartEvents();
+    this.$rootEl.append($gameOver);
   };
 
   // on keypress of 'p'
@@ -200,6 +204,13 @@
   View.prototype.handleKeyEvent = function (e) {
     e.preventDefault();
     switch (e.keyCode) {
+    case 32:
+      this.playAgain(e);
+      break;
+    case 80:
+      this.togglePause();
+      break;
+    // arrows for player 1
     case 37:
       if (this.board.snakes[0].dir === "E") { return }
       this.board.snakes[0].turn("W");
@@ -216,31 +227,55 @@
       if (this.board.snakes[0].dir === "N") { return }
       this.board.snakes[0].turn("S");
       break;
-    case 87:
-      if (this.board.snakes[1].dir === "S") { return }
-      this.board.snakes[1].turn("N");
-      break;
-    case 65:
-      if (this.board.snakes[1].dir === "E") { return }
-      this.board.snakes[1].turn("W");
-      break;
-    case 68:
-      if (this.board.snakes[1].dir === "W") { return }
-      this.board.snakes[1].turn("E");
-      break;
-    case 83:
-      if (this.board.snakes[1].dir === "N") { return }
-      this.board.snakes[1].turn("S");
-      break;
-    case 32:
-      this.playAgain(e);
-      break;
-    case 80:
-      this.togglePause();
-      break;
     default:
       break;
     }
+    if (this.board.snakes.length > 1) {
+      switch (e.keyCode) {
+      // wasd for player 2
+      case 87:
+        if (this.board.snakes[1].dir === "S") { return }
+        this.board.snakes[1].turn("N");
+        break;
+      case 65:
+        if (this.board.snakes[1].dir === "E") { return }
+        this.board.snakes[1].turn("W");
+        break;
+      case 68:
+        if (this.board.snakes[1].dir === "W") { return }
+        this.board.snakes[1].turn("E");
+        break;
+      case 83:
+        if (this.board.snakes[1].dir === "N") { return }
+        this.board.snakes[1].turn("S");
+        break;
+      default:
+        break;
+      }
+      if (this.board.snakes.length > 1) {
+        switch (e.keyCode) {
+        // ijkl for player 3
+        case 76:
+          if (this.board.snakes[2].dir === "E") { return }
+          this.board.snakes[2].turn("W");
+          break;
+        case 75:
+          if (this.board.snakes[2].dir === "S") { return }
+          this.board.snakes[2].turn("N");
+          break;
+        case 74:
+          if (this.board.snakes[2].dir === "W") { return }
+          this.board.snakes[2].turn("E");
+          break;
+        case 73:
+          if (this.board.snakes[2].dir === "N") { return }
+          this.board.snakes[2].turn("S");
+          break;
+        default:
+          break;
+        }
+      }
+    };
   };
 
 })();
