@@ -1,9 +1,12 @@
 (function(){
   window.SnakeGame = window.SnakeGame || {};
 
-  var Board = window.SnakeGame.Board = function(){
-    this.snake1 = new window.SnakeGame.Snake([4,4], "E", "red");
-    this.snake2 = new window.SnakeGame.Snake([46,4], "E", "blue");
+  // just requires numSnakes for now
+  var Board = window.SnakeGame.Board = function(options){
+    this.snakes = []
+    for (var i = 0; i < options.numSnakes; i++) {     // for now max 2
+      this.snakes.push(new window.SnakeGame.Snake(i));
+    }
     this.grid = [];
     this.apples = [randomCoord(), randomCoord()];
     this.setupBoard();
@@ -23,74 +26,67 @@
     };
   };
 
-  Board.prototype.generateApple = function () {
-    this.apples.push(randomCoord());
-    while (this.snake1.segmentsIncludes(this.apples[this.apples.length-1].pos),
-           this.snake2.segmentsIncludes(this.apples[this.apples.length-1].pos)){
-      var newApple = randomCoord();
-      this.apples[this.apples.length-1] = newApple;
-    };
-  };
-
+  // loss handlers
   Board.prototype.gameOver = function () {
-    if (this.isLost(this.snake1) ||
-        this.isLost(this.snake2) ||
+    if (this.snakes.some(this.isLost, this) ||
         this.ranIntoOther()) {
       return true;
-    };
+    } else {
     return false;
+    }
   };
 
   Board.prototype.isLost = function (snake){
-    if (snake.segments[0].outOfBounds() || this.ranIntoSelf(snake)) {
-      this.gameOverText = this.gameOverText || snake.color + " hit the wall";
+    if (snake.outOfBounds()) {
+      this.gameOverText = snake.color + " hit the wall";
       snake.lost = true;
       return true;
-    };
-    return false;
-  };
-
-  Board.prototype.ranIntoSelf = function (snake) {
-    for (var i = 0; i < snake.segments.length - 1; i++) {
-      for (var j = i + 1; j < snake.segments.length; j++) {
-        if (i !== j && snake.segments[i].equals(snake.segments[j].pos)){
-          this.gameOverText = snake.color + " ran into self";
-          snake.lost = true;
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
-  Board.prototype.ranIntoOther = function () {
-    var snake1Result = this.checkRanIntoOther(this.snake1, this.snake2);
-    var snake2Result = this.checkRanIntoOther(this.snake2, this.snake1);
-    if (snake1Result && snake2Result) {
-      this.gameOverText = "Draw";
-      return true;
-    } else if (snake1Result || snake2Result) {
+    } else if (snake.ranIntoSelf()) {
+      this.gameOverText = this.color + " ran into self"
+      snake.lost = true;
       return true;
     } else {
       return false;
     }
   };
 
-  Board.prototype.checkRanIntoOther = function (snake, otherSnake) {
-    for (var i = 0; i < otherSnake.segments.length; i++) {
-      if (otherSnake.segments[i].equals(snake.segments[0].pos)){
-        this.gameOverText = snake.color + " ran into " + otherSnake.color;
-        return true;
-      }
+  Board.prototype.ranIntoOther = function () {
+    var snakeResults = [];
+    this.gameOverText = this.gameOverText || "";
+    for (var i = 0; i < this.snakes.length; i++) {
+      snakeResults.push(this.snakes[i].checkRanIntoOther({
+        snakeIdx: i,
+        otherSnakes: this.snakes,
+        gameOverText: this.gameOverText
+      }));
+    };
+    var numLosses = 0;
+    snakeResults.forEach(function (result) {
+      if (result) { numLosses++ };
+    });
+    if (numLosses > 1) {
+      this.gameOverText = "Draw";
+      return true;
+    } else if (numLosses === 1) {
+      snakeResults.forEach(function(result, snakeIdx){
+        if (result) {
+          this.snakes[snakeIdx].lost = true;
+        }
+      }.bind(this))
+      return true;
+    } else {
+      return false;
     }
-    return false;
   };
 
   Board.prototype.step = function(){
-    var changedPoses1 = this.stepSnake(this.snake1);
-    var changedPoses2 = this.stepSnake(this.snake2);
+    var changedPoses = [];
+    var self = this;
+    this.snakes.forEach(function (snake){
+      changedPoses = changedPoses.concat(self.stepSnake(snake))
+    })
     this.turns++;
-    return changedPoses1.concat(changedPoses2);
+    return changedPoses;
   };
 
   Board.prototype.stepSnake = function(snake){
@@ -98,19 +94,40 @@
     snake.move(changedPoses);
     for (var i = 0; i < this.apples.length; i++) {
       if (snake.segmentsIncludes(this.apples[i].pos)) {
-        snake.scoreChange = true;
-        changedPoses = changedPoses.concat(this.apples[i]);
-        this.apples.splice(i, 1);
-        this.generateApple();
-        changedPoses = changedPoses.concat(this.apples[this.apples.length - 1])
+        // snake.scoreChange = true; --> may implement this kind of score again later
+        changedPoses = changedPoses.concat(this.replaceApple(i));
         snake.isGrowing = true;
         snake.finishGrowing = this.turns + 5;
       };
-    }
+    };
     if (snake.finishGrowing === this.turns){
       snake.isGrowing = false;
     };
     return changedPoses;
+  };
+
+  // Apple handlers
+  Board.prototype.generateApple = function () {
+    this.apples.push(randomCoord());
+    while (this.snakes.some(function (snake) {
+      return snake.segmentsIncludes(this.apples[this.apples.length - 1].pos)
+    }.bind(this))){
+      var newApple = randomCoord();
+      this.apples[this.apples.length - 1] = newApple;
+    };
+  };
+
+  Board.prototype.replaceApple = function (appleIdx) {
+    var changedPoses = []
+    changedPoses.push(this.apples[appleIdx]);
+    this.apples.splice(appleIdx, 1);
+    this.generateApple();
+    changedPoses.push(this.apples[this.apples.length - 1]);
+    return changedPoses;
+  };
+
+  Board.prototype.render = function () {
+    return this;
   }
 
   // Board.prototype.renderASCII = function () {
@@ -132,9 +149,7 @@
   //   return view;
   // };
 
-  Board.prototype.render = function () {
-    return this;
-  }
+  // util
 
   var randomCoord = function(){
     var x = Math.floor(Math.random() * Board.GRIDSIZE);
