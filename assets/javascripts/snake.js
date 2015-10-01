@@ -79,15 +79,14 @@
     return false;
   };
 
-    // requires list of all snakes, own idx in that list, and game over text location
+    // requires list of all snakes, own idx in that list
   Snake.prototype.checkRanIntoOther = function (options) {
     for (var snakeNum = 0; snakeNum < options.otherSnakes.length; snakeNum++) {
       if (snakeNum === options.snakeIdx) { continue };
       var otherSnake = options.otherSnakes[snakeNum];
       for (var i = 0; i < otherSnake.length(); i++) {
         if (otherSnake.segments[i].equals(this.head().pos)){
-          options.gameOverText = this.color + " ran into " + otherSnake.color;
-          return true;
+          return this.color + " ran into " + otherSnake.color;
         }
       }
     }

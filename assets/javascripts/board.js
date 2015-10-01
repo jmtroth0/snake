@@ -56,13 +56,12 @@
     for (var i = 0; i < this.snakes.length; i++) {
       snakeResults.push(this.snakes[i].checkRanIntoOther({
         snakeIdx: i,
-        otherSnakes: this.snakes,
-        gameOverText: this.gameOverText
+        otherSnakes: this.snakes
       }));
     };
     var numLosses = 0;
     snakeResults.forEach(function (result) {
-      if (result) { numLosses++ };
+      if (!!result) { numLosses++ };
     });
     if (numLosses > 1) {
       this.gameOverText = "Draw";
@@ -71,6 +70,7 @@
       snakeResults.forEach(function(result, snakeIdx){
         if (result) {
           this.snakes[snakeIdx].lost = true;
+          this.gameOverText = result;
         }
       }.bind(this))
       return true;
