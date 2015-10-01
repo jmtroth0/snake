@@ -15,12 +15,12 @@
   // possible snakes
   // Need direction, starting position (recommended 3 segments, and color)
   window.SnakeGame.snakeInfo = {
-    0: {
+    1: {
       dir: "E",
       startingPoses: [[4,4], [4,3], [4,2]],
       color: "red"
     },
-    1: {
+    2: {
       dir: "W",
       startingPoses: [[46,46], [46,47], [46,48]],
       color: "blue",

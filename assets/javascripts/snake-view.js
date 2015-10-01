@@ -1,11 +1,11 @@
 (function(){
   window.SnakeGame = window.SnakeGame || {};
 
-  var View = window.SnakeGame.View = function(el, challenge, numSnakes){
-    this.challenge = parseInt(challenge) || 5
+  var View = window.SnakeGame.View = function(options){
+    this.challenge = parseInt(options.challenge) || 5
     this.challenge = (100 - this.challenge * 10);
-    this.$rootEl = el;
-    this.numSnakes = numSnakes || 2;
+    this.$rootEl = options.el;
+    this.numSnakes = options.numSnakes || 2;
     this.scoreBoards = [];
     for (var i = 1; i <= this.numSnakes; i++) {
       this.scoreBoards.push(

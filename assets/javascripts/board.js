@@ -4,7 +4,7 @@
   // just requires numSnakes for now
   var Board = window.SnakeGame.Board = function(options){
     this.snakes = []
-    for (var i = 0; i < options.numSnakes; i++) {     // for now max 2
+    for (var i = 1; i <= options.numSnakes; i++) {     // for now max 2
       this.snakes.push(new window.SnakeGame.Snake(i));
     }
     this.grid = [];

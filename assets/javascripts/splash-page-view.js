@@ -14,13 +14,13 @@
   SplashPageView.prototype.initializeSinglePlayerGame = function (e) {
     e.preventDefault();
     this.removeModal();
-    new window.SnakeGame.View(this.$rootEl, 4, 1);
+    new window.SnakeGame.View({el: this.$rootEl, challenge: 4, numSnakes: 1});
   }
 
   SplashPageView.prototype.initializeVSGame = function (e) {
     e.preventDefault();
     this.removeModal();
-    new window.SnakeGame.View(this.$rootEl, 4, 2);
+    new window.SnakeGame.View(el: this.$rootEl, challenge: 4, numSnakes: 2);
   }
 
 })();
