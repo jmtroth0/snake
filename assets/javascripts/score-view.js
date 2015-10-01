@@ -11,13 +11,14 @@
   ScoreView.prototype.setUpScoreBoard = function () {
     this.$vsScore = $('<h2 class="vs-score">')
     this.$appleScore = $('<h2 class="apple-score">')
-    this.$vsScore.html('Vs Score: ')
-    this.$appleScore.html('Apple Score: ')
+    this.$vsScore.html('Vs Score: 0')
+    this.$appleScore.html('Apple Score: 0')
     this.$rootEl.append(this.$vsScore).append(this.$appleScore)
   };
 
-  ScoreView.prototype.restart = function () {
-    this.placeScore();
+  ScoreView.prototype.resetAppleScore = function () {
+    this.appleScore = 0;
+    this.placeAppleScore();
   };
 
   ScoreView.prototype.placeVsScore = function () {

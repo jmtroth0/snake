@@ -109,22 +109,20 @@
         return;
       } else {
         this.renderChangedPoses();
-        // this.registerScores();
+        this.incrementAppleScores();
         this.changedPoses = this.board.step();
       }
     }
   };
 
-  // View.prototype.incrementAppleScores = function () {
-  //   if (this.board.snake1.scoreChange){
-  //     this.scoreBoard1.incrementScore(10 - this.challenge / 10);
-  //     this.board.snake1.scoreChange = false
-  //   }
-  //   if (this.board.snake2.scoreChange){
-  //     this.scoreBoard2.incrementScore(10 - this.challenge / 10);
-  //     this.board.snake2.scoreChange = false
-  //   }
-  // };
+  View.prototype.incrementAppleScores = function () {
+    this.board.snakes.forEach(function(snake, idx){
+      if (snake.scoreChange) {
+        this.scoreBoards[idx].incrementAppleScore(10 - this.challenge / 10);
+        snake.scoreChange = false;
+      }
+    }.bind(this))
+  };
 
   View.prototype.incrementScores = function () {
     for (var i = 0; i < this.board.snakes.length; i++) {
@@ -142,7 +140,7 @@
 
   View.prototype.submitChallenge = function (e) {
     e.preventDefault();
-    this.toggleChallengeModal();
+    this.toggleChallengeModal(e);
     this.challenge = this.$rootEl.find('input#challenge').val()
     this.challenge = (100 - this.challenge * 10);
     this.playAgain(e);
@@ -172,6 +170,9 @@
     this.$rootEl.find('div.game-over').remove();
     this.board.over = false;
     this.board.snakes.forEach(function(snake) { snake.lost = false });
+    this.scoreBoards.forEach(function(board){
+      board.resetAppleScore();
+    })
   };
 
   View.prototype.gameOverProtocol = function () {

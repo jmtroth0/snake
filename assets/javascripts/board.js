@@ -94,7 +94,7 @@
     snake.move(changedPoses);
     for (var i = 0; i < this.apples.length; i++) {
       if (snake.segmentsIncludes(this.apples[i].pos)) {
-        // snake.scoreChange = true; --> may implement this kind of score again later
+        snake.scoreChange = true;
         changedPoses = changedPoses.concat(this.replaceApple(i));
         snake.isGrowing = true;
         snake.finishGrowing = this.turns + 5;

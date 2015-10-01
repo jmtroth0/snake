@@ -45,20 +45,20 @@ ul.grid > li.snake-segment1 {
   transition: opacity .1s;
 }
 
-.score-board1 {
-  color: brown;
+.score-board1,
+.score-board2 {
   position: absolute;
   right: 30px;
+}
+
+.score-board1 {
+  color: brown;
   top: 50px;
-  padding: 20px;
 }
 
 .score-board2 {
   color: blue;
-  position: absolute;
-  right: 30px;
   top: 150px;
-  padding: 20px;
 }
 
 ul.grid > li.snake-segment2 {
