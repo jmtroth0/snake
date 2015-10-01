@@ -4,14 +4,9 @@
   // just requires numSnakes for now
   var Board = window.SnakeGame.Board = function(options){
     this.snakes = []
-    for (var i = 1; i <= options.numSnakes; i++) {     // for now max 2
-      this.snakes.push(new window.SnakeGame.Snake(i));
-    }
     this.grid = [];
     this.apples = [];
-    for (var i = 0; i < options.numSnakes; i++) {
-      this.apples.push(randomCoord());
-    }
+    this.setSnakesAndApples(options);
     this.setupBoard();
     this.turns = 0;
     this.over = false;
@@ -27,6 +22,15 @@
       };
       this.grid.push(row);
     };
+  };
+
+  Board.prototype.setSnakesAndApples = function (options) {
+    for (var i = 1; i <= options.numSnakes; i++) {     // for now max 2
+      this.snakes.push(new window.SnakeGame.Snake(i));
+    }
+    for (var i = 0; i < options.numSnakes; i++) {
+      this.apples.push(randomCoord());
+    }
   };
 
   // loss handlers
