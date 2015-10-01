@@ -5,7 +5,7 @@
     this.challenge = parseInt(challenge) || 5
     this.challenge = (100 - this.challenge * 10);
     this.$rootEl = el;
-    this.numSnakes = 2;
+    this.numSnakes = 1;
     this.scoreBoards = [];
     for (var i = 1; i <= this.numSnakes; i++) {
       this.scoreBoards.push(

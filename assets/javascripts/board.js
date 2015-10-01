@@ -42,7 +42,7 @@
       snake.lost = true;
       return true;
     } else if (snake.ranIntoSelf()) {
-      this.gameOverText = this.color + " ran into self"
+      this.gameOverText = snake.color + " ran into self"
       snake.lost = true;
       return true;
     } else {
