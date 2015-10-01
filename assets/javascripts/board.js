@@ -102,6 +102,7 @@
         changedPoses = changedPoses.concat(this.apples[i]);
         this.apples.splice(i, 1);
         this.generateApple();
+        changedPoses = changedPoses.concat(this.apples[this.apples.length - 1])
         snake.isGrowing = true;
         snake.finishGrowing = this.turns + 5;
       };
