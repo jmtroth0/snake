@@ -47,16 +47,24 @@ ul.grid > li.snake-segment1 {
 
 .score-board1 {
   color: brown;
+  position: absolute;
+  right: 30px;
+  top: 50px;
+  padding: 20px;
+}
+
+.score-board2 {
+  color: blue;
+  position: absolute;
+  right: 30px;
+  top: 150px;
+  padding: 20px;
 }
 
 ul.grid > li.snake-segment2 {
   background: blue;
   opacity: 1;
   transition: opacity .1s;
-}
-
-.score-board2 {
-  color: blue;
 }
 
 ul.grid > li.snake-apple {

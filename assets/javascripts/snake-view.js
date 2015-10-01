@@ -5,7 +5,7 @@
     this.challenge = parseInt(challenge) || 5
     this.challenge = (100 - this.challenge * 10);
     this.$rootEl = el;
-    this.numSnakes = 1;
+    this.numSnakes = 2;
     this.scoreBoards = [];
     for (var i = 1; i <= this.numSnakes; i++) {
       this.scoreBoards.push(
@@ -28,6 +28,7 @@
     $(document).on("keydown", this.handleKeyEvent.bind(this));
   };
 
+  // initial board render
   View.prototype.render = function () {
     this.$grid = $("<ul class='grid'>");
 
@@ -55,6 +56,7 @@
     return this;
   };
 
+  // in game render
   View.prototype.renderChangedPoses = function () {
     for (var i = 0; i < this.changedPoses.length; i++) {
       var x = this.changedPoses[i].pos[0];
@@ -113,8 +115,7 @@
     }
   };
 
-  // may reinstitute later --> scoring that involves number of apples collected
-  // View.prototype.registerScores = function () {
+  // View.prototype.incrementAppleScores = function () {
   //   if (this.board.snake1.scoreChange){
   //     this.scoreBoard1.incrementScore(10 - this.challenge / 10);
   //     this.board.snake1.scoreChange = false
@@ -125,36 +126,17 @@
   //   }
   // };
 
-  View.prototype.gameOverProtocol = function () {
-    this.board.over = true;
-    this.incrementScores();
-    var $gameOver = $('<div class="game-over">');
-    this.$rootEl.append($gameOver);
-    $gameOver.html("<h1>Game Over!</h1>");
-    $gameOver.append("<p>" + this.board.gameOverText + "</p>");
-    $gameOver.append("<button id='new-game'>Play Again?</button>");
-    $gameOver.append("<button id='adjust-difficulty'>Adjust Difficulty?</button>");
-    this.bindRestartEvents();
-  };
-
   View.prototype.incrementScores = function () {
     for (var i = 0; i < this.board.snakes.length; i++) {
-      if (this.board.snakes[i].lost) {
-        this.scoreBoards.forEach(function(board, idx){
-          if (idx !== i) { board.incrementScore(10 - this.challenge / 10) }
-        }.bind(this))
-      }
+      if (!this.board.snakes[i].lost) {
+        this.scoreBoards[i].incrementVsScore(10 - this.challenge / 10)
+      };
     };
   };
 
-  View.prototype.bindRestartEvents = function () {
-    this.$rootEl.on('click', 'button#new-game', this.playAgain.bind(this));
-    this.$rootEl.on('click', 'button#adjust-difficulty', this.toggleChallengeModal.bind(this));
-    this.$rootEl.on('click', 'button#cancel-challenge-adjust', this.toggleChallengeModal.bind(this));
-    this.$rootEl.on('click', 'button#submit-challenge', this.submitChallenge.bind(this));
-  };
-
-  View.prototype.toggleChallengeModal = function () {
+  // changing level
+  View.prototype.toggleChallengeModal = function (e) {
+    e.preventDefault();
     this.$rootEl.find('.challenge-modal').toggleClass('active');
   };
 
@@ -166,7 +148,15 @@
     this.playAgain(e);
   };
 
-  // on game restart from button click or spacebar
+  // on game over stuff
+
+  View.prototype.bindRestartEvents = function () {
+    this.$rootEl.on('click', 'button#new-game', this.playAgain.bind(this));
+    this.$rootEl.on('click', 'button#adjust-difficulty', this.toggleChallengeModal.bind(this));
+    this.$rootEl.on('click', 'button#cancel-challenge-adjust', this.toggleChallengeModal.bind(this));
+    this.$rootEl.on('click', 'button#submit-challenge', this.submitChallenge.bind(this));
+  };
+
   View.prototype.playAgain = function (e) {
     e.preventDefault();
     this.restartGame();
@@ -182,6 +172,18 @@
     this.$rootEl.find('div.game-over').remove();
     this.board.over = false;
     this.board.snakes.forEach(function(snake) { snake.lost = false });
+  };
+
+  View.prototype.gameOverProtocol = function () {
+    this.board.over = true;
+    this.incrementScores();
+    var $gameOver = $('<div class="game-over">');
+    this.$rootEl.append($gameOver);
+    $gameOver.html("<h1>Game Over!</h1>");
+    $gameOver.append("<p>" + this.board.gameOverText + "</p>");
+    $gameOver.append("<button id='new-game'>Play Again?</button>");
+    $gameOver.append("<button id='adjust-difficulty'>Adjust Difficulty?</button>");
+    this.bindRestartEvents();
   };
 
   // on keypress of 'p'
