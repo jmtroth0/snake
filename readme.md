@@ -14,7 +14,7 @@ Arrow Keys for red. WASD for Blue
 
 ## Snake Features
 
-- Only updates the necessary squares when rendering.
+- Only updates the changed squares when rendering.
 - Level starts at level 5. Increase it between games at your own risk.
 - Keeps score based on level.
 
@@ -22,18 +22,19 @@ Arrow Keys for red. WASD for Blue
 
 - Can play vs another player. If you run into each other you still die!
 - Competing for apples as well as total victory.
+- Easily customizable code.
 
 # Customization
 
-To do anything, you will first need to download it.
+To do anything, you will first need to download or clone it.
 
 ## Adding More Players
 
 - First go to the snake.js page and add the next entry into SnakeInfo. This
   must include the starting direction, the starting squares, and a color. Make
   sure you aren't starting off running into yourself!
-- Next, got to the css page and create an entry at the bottom for your snake.
-  It will need to look like this, with your color and number input:
+- Next, go to the css page and create an entry at the bottom for your snake.
+  It will need to look something like this, with your color and number input:
 ```
   ul.grid > li.snake-segment3 {
     background: green;
@@ -41,6 +42,7 @@ To do anything, you will first need to download it.
     transition: opacity .1s;
   }
 ```
+- If you are going to have more than 3 players, you will need to determine your own set of keybindings for the 4th and beyond.
 - Finally, in the splash-page-view.js file, on line 23 change the number of players
   for the VSGame initialization.
 - Click VSGame when the splash page comes up!
