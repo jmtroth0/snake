@@ -73,7 +73,8 @@ ul.grid > li.snake-apple {
   transition: opacity .1s;
 }
 
-div.challenge-modal {
+div.challenge-modal,
+div.splash-modal {
   display: none;
   position: fixed;
   top: 0;
@@ -116,5 +117,9 @@ input#challenge {
 }
 
 div.challenge-modal.active {
+  display: block;
+}
+
+div.splash-modal {
   display: block;
 }

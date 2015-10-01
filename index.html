@@ -10,6 +10,7 @@
     <script src="./utils/jquery-2.1.4.min.js"></script>
 
     <script src="./utils/coord.js"></script>
+    <script src="./assets/javascripts/splash-page-view.js"></script>
     <script src="./assets/javascripts/snake.js"></script>
     <script src="./assets/javascripts/board.js"></script>
     <script src="./assets/javascripts/score-view.js"></script>
@@ -34,11 +35,20 @@
         </div>
         <div class="modal-screen"></div>
       </div>
+      <div class="splash-modal">
+        <div class="modal-content">
+          <div class='modal-form'>
+            <button id="single-player">Single Player</button>
+            <button id="vs-game">VS Game</button>
+          </div>
+        </div>
+        <div class="modal-screen"></div>
+      </div>
     </div>
 
     <script>
       $(function () {
-        new SnakeGame.View($("div.snake-game"));;
+        new SnakeGame.SplashPageView($("div.snake-game"));;
       });
     </script>
   </body>
