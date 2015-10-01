@@ -52,13 +52,16 @@
 
   Board.prototype.ranIntoOther = function () {
     var snakeResults = [];
-    this.gameOverText = this.gameOverText || "";
     for (var i = 0; i < this.snakes.length; i++) {
       snakeResults.push(this.snakes[i].checkRanIntoOther({
         snakeIdx: i,
         otherSnakes: this.snakes
       }));
     };
+    return this.checkForHeadOnCollision(snakeResults);
+  };
+
+  Board.prototype.checkForHeadOnCollision = function (snakeResults) {
     var numLosses = 0;
     snakeResults.forEach(function (result) {
       if (!!result) { numLosses++ };
@@ -79,6 +82,7 @@
     }
   };
 
+  // board step handlers
   Board.prototype.step = function(){
     var changedPoses = [];
     var self = this;
