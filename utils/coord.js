@@ -14,10 +14,10 @@
   }
 
   Coord.prototype.outOfBounds = function(){
-    return (this.pos[0] >= window.SnakeGame.Board.GRIDSIZE ||
-            this.pos[0] < 0 ||
-            this.pos[1] >= window.SnakeGame.Board.GRIDSIZE ||
-            this.pos[1] < 0 );
+    return (this.pos[0] >= window.SnakeGame.Board.GRIDSIZE - 1  ||
+            this.pos[0] <= 0 ||
+            this.pos[1] >= window.SnakeGame.Board.GRIDSIZE - 1||
+            this.pos[1] <= 0 );
   }
 
 })();

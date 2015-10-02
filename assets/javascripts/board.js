@@ -6,7 +6,7 @@
     this.snakes = []
     this.grid = [];
     this.apples = [];
-    this.setSnakesAndApples(options);
+    this.setSnakesAndApples(options.numSnakes);
     this.setupBoard();
     this.turns = 0;
     this.over = false;
@@ -24,9 +24,9 @@
     };
   };
 
-  Board.prototype.setSnakesAndApples = function (options) {
-    for (var i = 1; i <= options.numSnakes; i++) {     // for now max 2
-      this.snakes.push(new window.SnakeGame.Snake(i));
+  Board.prototype.setSnakesAndApples = function (numSnakes) {
+    for (var i = 1; i <= numSnakes; i++) {     // for now max 2
+      this.snakes.push(new window.SnakeGame.Snake(i, this));
       this.apples.push(randomCoord());
     }
   };
@@ -91,24 +91,9 @@
   Board.prototype.step = function(){
     var self = this;
     this.snakes.forEach(function (snake){
-      self.stepSnake(snake)
+      snake.move();
     })
     this.turns++;
-  };
-
-  Board.prototype.stepSnake = function(snake){
-    snake.move();
-    for (var i = 0; i < this.apples.length; i++) {
-      if (snake.segmentsIncludes(this.apples[i].pos)) {
-        snake.scoreChange = true;
-        replaceApple(i);
-        snake.isGrowing = true;
-        snake.finishGrowing = this.turns + 5;
-      };
-    };
-    if (snake.finishGrowing === this.turns){
-      snake.isGrowing = false;
-    };
   };
 
   // Apple handlers

@@ -1,7 +1,7 @@
 (function(){
   window.SnakeGame = window.SnakeGame || {};
 
-  var Snake = window.SnakeGame.Snake = function(snakeNum){
+  var Snake = window.SnakeGame.Snake = function(snakeNum, board){
     this.dir = Snake.snakeInfo[snakeNum].dir;
     this.segments = [];
     for (var i = 0; i < Snake.snakeInfo[snakeNum].startingPoses.length; i++) {
@@ -10,6 +10,7 @@
     }
     this.color = Snake.snakeInfo[snakeNum].color;
     this.growTurns = 3;
+    this.board = board;
   };
 
   // possible snakes
@@ -17,12 +18,12 @@
   Snake.snakeInfo = {
     1: {
       dir: "E",
-      startingPoses: [[4,4], [4,3], [4,2]],
+      startingPoses: [[4,4]],
       color: "red"
     },
     2: {
       dir: "W",
-      startingPoses: [[46,46], [46,47], [46,48]],
+      startingPoses: [[46,46]],
       color: "blue",
     }
   };
@@ -37,10 +38,10 @@
   // movement
   Snake.prototype.move = function () {
     var move = this.testMove();
-
     this.segments.unshift(move);
     this.turning = false;
     this._moveTail();
+    this.eatApple();
   };
 
   Snake.prototype.testMove = function() {
@@ -57,13 +58,15 @@
   };
 
   Snake.prototype._moveTail = function () {
-    this.growTurns > 0 ? this.growTurns-- : changedPoses.push(this.segments.pop());
+    this.growTurns > 0 ? this.growTurns-- : this.segments.pop();
   };
 
   Snake.prototype.eatApple = function () {
     this.board.apples.forEach(function(apple){
-      if (this.head().equals(apples)){
+      if (this.head().equals(apple.pos)){
         this.growTurns += 3;
+        this.scoreChange = true;
+        this.board.replaceApple();
         return true;
       }
     }.bind(this));

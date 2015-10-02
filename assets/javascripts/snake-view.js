@@ -13,11 +13,10 @@
       )
     }
     this.setupGame();
-    this.pause = false;
+    this.pause = true;
   };
 
   View.prototype.setupGame = function () {
-    this.pause = false;
     this.board = new window.SnakeGame.Board({numSnakes: this.numSnakes});
     this.renderGrid();
     this.bindEvents();
@@ -29,17 +28,14 @@
 
   View.prototype.renderChangedPoses = function () {
     var self = this;
+    this.updateClasses(this.board.apples, 'snake-apple');
+
     this.board.snakes.forEach(function(snake, idx){
       self.updateClasses(snake.segments, 'snake-segment' + (idx + 1))
-    })
-
-    this.board.apples.forEach(function(apple, idx){
-      self.updateClasses([apple], 'snake-apple')
     })
   };
 
   View.prototype.updateClasses = function(coords, className) {
-
     this.$grid.find('li').filter("." + className).removeClass();
 
     coords.forEach(function(coord){
@@ -57,20 +53,20 @@
       }
     }
     this.$rootEl.find('div.game-board').html(this.$grid);
+    this.renderChangedPoses();
   };
 
   View.prototype.step = function () {
     if (!this.board.over) {
       if (this.board.gameOver()){
         this.gameOverProtocol();
-        return;
       } else {
         this.board.step();
         this.renderChangedPoses();
         this.incrementAppleScores();
+        this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
       }
     }
-    this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
   };
 
   View.prototype.incrementAppleScores = function () {
