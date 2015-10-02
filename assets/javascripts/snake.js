@@ -2,19 +2,19 @@
   window.SnakeGame = window.SnakeGame || {};
 
   var Snake = window.SnakeGame.Snake = function(snakeNum){
-    this.dir = window.SnakeGame.snakeInfo[snakeNum].dir;
+    this.dir = Snake.snakeInfo[snakeNum].dir;
     this.segments = [];
-    for (var i = 0; i < window.SnakeGame.snakeInfo[snakeNum].startingPoses.length; i++) {
-      var segment = new window.SnakeGame.Coord(window.SnakeGame.snakeInfo[snakeNum].startingPoses[i]);
+    for (var i = 0; i < Snake.snakeInfo[snakeNum].startingPoses.length; i++) {
+      var segment = new window.SnakeGame.Coord(Snake.snakeInfo[snakeNum].startingPoses[i]);
       this.segments.push(segment);
     }
-    this.color = window.SnakeGame.snakeInfo[snakeNum].color;
-    this.isGrowing = false;
+    this.color = Snake.snakeInfo[snakeNum].color;
+    this.growTurns = 3;
   };
 
   // possible snakes
   // Need direction, starting position (recommended 3 segments, and color)
-  window.SnakeGame.snakeInfo = {
+  Snake.snakeInfo = {
     1: {
       dir: "E",
       startingPoses: [[4,4], [4,3], [4,2]],
@@ -27,44 +27,48 @@
     }
   };
 
+  Snake.moveDirs = {
+    "N": [-1,  0],
+    "W": [ 0, -1],
+    "S": [ 1,  0],
+    "E": [ 0,  1],
+  }
+
   // movement
-  Snake.prototype.move = function (changedPoses) {
+  Snake.prototype.move = function () {
     var move = this.testMove();
 
     this.segments.unshift(move);
-    changedPoses.push(move);
-    this._moveTail(changedPoses);
+    this.turning = false;
+    this._moveTail();
   };
 
   Snake.prototype.testMove = function() {
     var testMove;
-    switch(this.dir){
-    case "E":
-      testMove = this.segments[0].plus([0, 1])
-      break;
-    case "W":
-      testMove = this.segments[0].plus([0, -1])
-      break;
-    case "N":
-      testMove = this.segments[0].plus([-1, 0])
-      break;
-    case "S":
-      testMove = this.segments[0].plus([1, 0])
-      break;
-    default:
-      break;
-    };
+    testMove = this.segments[0].plus(Snake.moveDirs[this.dir])
+
     return testMove;
   };
 
   Snake.prototype.turn = function (dir) {
+    if (this.turning) { return }
     this.dir = dir;
+    this.turning = true;
   };
 
-  Snake.prototype._moveTail = function (changedPoses) {
-    if (!this.isGrowing){
-      changedPoses.push(this.segments.pop());
-    }
+  Snake.prototype._moveTail = function () {
+    this.growTurns > 0 ? this.growTurns-- : changedPoses.push(this.segments.pop());
+  };
+
+  Snake.prototype.eatApple = function () {
+    this.board.apples.forEach(function(apple){
+      if (this.head().equals(apples)){
+        this.growTurns += 3;
+        return true;
+      }
+    }.bind(this));
+
+    return false;
   };
 
 // Lose Conditions

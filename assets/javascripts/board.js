@@ -27,8 +27,6 @@
   Board.prototype.setSnakesAndApples = function (options) {
     for (var i = 1; i <= options.numSnakes; i++) {     // for now max 2
       this.snakes.push(new window.SnakeGame.Snake(i));
-    }
-    for (var i = 0; i < options.numSnakes; i++) {
       this.apples.push(randomCoord());
     }
   };
@@ -91,22 +89,19 @@
 
   // board step handlers
   Board.prototype.step = function(){
-    var changedPoses = [];
     var self = this;
     this.snakes.forEach(function (snake){
-      changedPoses = changedPoses.concat(self.stepSnake(snake))
+      self.stepSnake(snake)
     })
     this.turns++;
-    return changedPoses;
   };
 
   Board.prototype.stepSnake = function(snake){
-    var changedPoses = [];
-    snake.move(changedPoses);
+    snake.move();
     for (var i = 0; i < this.apples.length; i++) {
       if (snake.segmentsIncludes(this.apples[i].pos)) {
         snake.scoreChange = true;
-        changedPoses = changedPoses.concat(this.replaceApple(i));
+        replaceApple(i);
         snake.isGrowing = true;
         snake.finishGrowing = this.turns + 5;
       };
@@ -114,7 +109,6 @@
     if (snake.finishGrowing === this.turns){
       snake.isGrowing = false;
     };
-    return changedPoses;
   };
 
   // Apple handlers
@@ -129,12 +123,8 @@
   };
 
   Board.prototype.replaceApple = function (appleIdx) {
-    var changedPoses = []
-    changedPoses.push(this.apples[appleIdx]);
     this.apples.splice(appleIdx, 1);
     this.generateApple();
-    changedPoses.push(this.apples[this.apples.length - 1]);
-    return changedPoses;
   };
 
   Board.prototype.render = function () {

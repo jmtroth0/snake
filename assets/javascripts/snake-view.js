@@ -13,106 +13,64 @@
       )
     }
     this.setupGame();
-    this.pause = true;
+    this.pause = false;
   };
 
   View.prototype.setupGame = function () {
     this.pause = false;
     this.board = new window.SnakeGame.Board({numSnakes: this.numSnakes});
-    this.$rootEl.find('div.game-board').html(this.render().$grid);
+    this.renderGrid();
     this.bindEvents();
-    this.changedPoses = [];
   };
 
   View.prototype.bindEvents = function () {
     $(document).on("keydown", this.handleKeyEvent.bind(this));
   };
 
-  // initial board render
-  View.prototype.render = function () {
+  View.prototype.renderChangedPoses = function () {
+    var self = this;
+    this.board.snakes.forEach(function(snake, idx){
+      self.updateClasses(snake.segments, 'snake-segment' + (idx + 1))
+    })
+
+    this.board.apples.forEach(function(apple, idx){
+      self.updateClasses([apple], 'snake-apple')
+    })
+  };
+
+  View.prototype.updateClasses = function(coords, className) {
+
+    this.$grid.find('li').filter("." + className).removeClass();
+
+    coords.forEach(function(coord){
+      var location = coord.pos[0] * window.SnakeGame.Board.GRIDSIZE + coord.pos[1];
+      this.$grid.find('li').eq(location).addClass(className)
+    }.bind(this))
+  }
+
+  View.prototype.renderGrid = function () {
     this.$grid = $("<ul class='grid'>");
 
     for (var i = 0; i < this.board.grid.length; i++) {
       for (var j = 0; j < this.board.grid[0].length; j++) {
-
-        var isSnake = false;
-        for (var numSnake = 0; numSnake < this.numSnakes; numSnake++) {
-          if (this.board.snakes[numSnake].segmentsIncludes([i,j])) {
-            this.$grid.append("<li class='snake-segment" + (numSnake + 1) + " group'>");
-            isSnake = true;
-          }
-        }
-        if (isSnake) {
-          continue;
-        } else if (this.board.apples.some(function(apple){
-          return apple.equals([i,j])
-        })) {
-          this.$grid.append("<li class='snake-apple group'>");
-        } else {
-          this.$grid.append("<li class='snake-empty group'>");
-        }
+        this.$grid.append("<li class='group'>");
       }
     }
-    return this;
-  };
-
-  // in game render
-  View.prototype.renderChangedPoses = function () {
-    for (var i = 0; i < this.changedPoses.length; i++) {
-      var x = this.changedPoses[i].pos[0];
-      var y = this.changedPoses[i].pos[1];
-      var location = this.$grid.find('li').eq(x * this.board.grid.length + y);
-      var isSnake = false;
-      for (var numSnake = 0; numSnake < this.numSnakes; numSnake++) {
-        if (this.board.snakes[numSnake].segmentsIncludes([x,y])) {
-          this.renderSnakePos(this.board.snake1, location, 'snake-segment' + (numSnake + 1));
-          isSnake = true;
-        }
-      }
-      if (isSnake) {
-        continue;
-      } else if (this.board.apples.some(function(apple){
-        return apple.equals([x,y])
-      })) {
-        this.renderApplePos(location);
-      } else {
-        this.removeRenders(location);
-      }
-    }
-    return this;
-  };
-
-  View.prototype.renderSnakePos = function (snake, location, cssClass){
-    location.addClass(cssClass);
-    location.removeClass('snake-apple');
-    location.removeClass('snake-empty');
-  };
-
-  View.prototype.renderApplePos = function (location){
-    location.addClass('snake-apple');
-    location.removeClass('snake-empty');
-  };
-
-  View.prototype.removeRenders = function (location) {
-    for (var i = 0; i < this.board.snakes.length; i++) {
-      location.removeClass('snake-segment' + (i + 1));
-    }
-    location.removeClass('snake-apple');
-    location.addClass('snake-empty');
+    this.$rootEl.find('div.game-board').html(this.$grid);
   };
 
   View.prototype.step = function () {
-    this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
     if (!this.board.over) {
       if (this.board.gameOver()){
         this.gameOverProtocol();
         return;
       } else {
+        this.board.step();
         this.renderChangedPoses();
         this.incrementAppleScores();
-        this.changedPoses = this.board.step();
       }
     }
+    this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
   };
 
   View.prototype.incrementAppleScores = function () {
@@ -147,6 +105,20 @@
   };
 
   // on game over stuff
+  View.prototype.playAgain = function (e) {
+    e.preventDefault();
+    this.restartGame();
+    this.setupGame();
+  };
+
+  View.prototype.restartGame = function () {
+    this.unBindGameOverEvents();
+    this.board.over = false;
+    this.board.snakes.forEach(function(snake) { snake.lost = false });
+    this.scoreBoards.forEach(function(board){
+      board.resetAppleScore();
+    })
+  };
 
   View.prototype.bindRestartEvents = function () {
     this.$rootEl.on('click', 'button#new-game', this.playAgain.bind(this));
@@ -155,24 +127,13 @@
     this.$rootEl.on('click', 'button#submit-challenge', this.submitChallenge.bind(this));
   };
 
-  View.prototype.playAgain = function (e) {
-    e.preventDefault();
-    this.restartGame();
-    this.setupGame();
-  };
-
-  View.prototype.restartGame = function () {
+  View.prototype.unBindGameOverEvents = function () {
     this.$rootEl.off();
     this.$rootEl.find('button#new-game').off();
     this.$rootEl.find('button#adjust-difficulty').off();
     this.$rootEl.find('button#cancel-challenge-adjust').off();
     this.$rootEl.find('button#submit-challenge').off();
     this.$rootEl.find('div.game-over').remove();
-    this.board.over = false;
-    this.board.snakes.forEach(function(snake) { snake.lost = false });
-    this.scoreBoards.forEach(function(board){
-      board.resetAppleScore();
-    })
   };
 
   View.prototype.gameOverProtocol = function () {
@@ -201,81 +162,61 @@
     this.pause = !this.pause
   };
 
+  View.GENERAL_KEYS = {
+    32: true, // start again
+    80: true  // pause or start
+  }
+
+  View.PLAYER_ONE_KEYS = {
+    // arrow keys
+    38: "N",
+    37: "W",
+    40: "S",
+    39: "E",
+  };
+
+  View.PLAYER_TWO_KEYS = {
+    // wasd
+    87: "N",
+    65: "W",
+    83: "S",
+    68: "E",
+  };
+
+  View.PLAYER_THREE_KEYS = {
+    // ijkl
+    75: "N",
+    76: "W",
+    73: "S",
+    74: "E",
+  };
+
   View.prototype.handleKeyEvent = function (e) {
     e.preventDefault();
+
+    // pause and restart (p and spacebar)
+    if (View.GENERAL_KEYS[e.keyCode]) {
+      this.handleGeneralKeyEvent(e)
+    } else if (View.PLAYER_ONE_KEYS[e.keyCode]) {
+      this.board.snakes[0].turn(View.PLAYER_ONE_KEYS[e.keyCode])
+    } else if (View.PLAYER_TWO_KEYS[e.keyCode]) {
+      this.board.snakes[1].turn(View.PLAYER_TWO_KEYS[e.keyCode])
+    } else if (View.PLAYER_THREE_KEYS[e.keyCode]) {
+      this.board.snakes[2].turn(View.PLAYER_THREE_KEYS[e.keyCode])
+    }
+  };
+
+  View.prototype.handleGeneralKeyEvent = function (e) {
     switch (e.keyCode) {
     case 32:
       this.playAgain(e);
       break;
     case 80:
-      this.togglePause();
-      break;
-    // arrows for player 1
-    case 37:
-      if (this.board.snakes[0].dir === "E") { return }
-      this.board.snakes[0].turn("W");
-      break;
-    case 38:
-      if (this.board.snakes[0].dir === "S") { return }
-      this.board.snakes[0].turn("N");
-      break;
-    case 39:
-      if (this.board.snakes[0].dir === "W") { return }
-      this.board.snakes[0].turn("E");
-      break;
-    case 40:
-      if (this.board.snakes[0].dir === "N") { return }
-      this.board.snakes[0].turn("S");
+      this.togglePause(e);
       break;
     default:
       break;
     }
-    if (this.board.snakes.length > 1) {
-      switch (e.keyCode) {
-      // wasd for player 2
-      case 87:
-        if (this.board.snakes[1].dir === "S") { return }
-        this.board.snakes[1].turn("N");
-        break;
-      case 65:
-        if (this.board.snakes[1].dir === "E") { return }
-        this.board.snakes[1].turn("W");
-        break;
-      case 68:
-        if (this.board.snakes[1].dir === "W") { return }
-        this.board.snakes[1].turn("E");
-        break;
-      case 83:
-        if (this.board.snakes[1].dir === "N") { return }
-        this.board.snakes[1].turn("S");
-        break;
-      default:
-        break;
-      }
-      if (this.board.snakes.length > 1) {
-        switch (e.keyCode) {
-        // ijkl for player 3
-        case 76:
-          if (this.board.snakes[2].dir === "E") { return }
-          this.board.snakes[2].turn("W");
-          break;
-        case 75:
-          if (this.board.snakes[2].dir === "S") { return }
-          this.board.snakes[2].turn("N");
-          break;
-        case 74:
-          if (this.board.snakes[2].dir === "W") { return }
-          this.board.snakes[2].turn("E");
-          break;
-        case 73:
-          if (this.board.snakes[2].dir === "N") { return }
-          this.board.snakes[2].turn("S");
-          break;
-        default:
-          break;
-        }
-      }
-    };
-  };
+  }
 
 })();
