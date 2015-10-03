@@ -53,6 +53,9 @@
 
   Snake.prototype.turn = function (dir) {
     if (this.turning) { return }
+    if (((this.dir == "N" || this.dir == "S") && (dir == "N" || dir == "S")) ||
+        ((this.dir == "W" || this.dir == "E") && (dir == "W" || dir == "E")))
+      { return }
     this.dir = dir;
     this.turning = true;
   };
