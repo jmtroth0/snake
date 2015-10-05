@@ -37,16 +37,15 @@
 
   // movement
   Snake.prototype.move = function () {
-    var move = this.testMove();
+    var move = this.testMove(this.dir);
     this.segments.unshift(move);
     this.turning = false;
     this._moveTail();
     this.eatApple();
   };
 
-  Snake.prototype.testMove = function() {
-    var testMove;
-    testMove = this.segments[0].plus(Snake.moveDirs[this.dir])
+  Snake.prototype.testMove = function(dir) {
+    var testMove = this.head().plus(Snake.moveDirs[dir])
 
     return testMove;
   };
