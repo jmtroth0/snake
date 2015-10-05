@@ -31,8 +31,7 @@ To do anything, you will first need to download or clone it.
 ## Adding More Players
 
 - First go to the snake.js page and add the next entry into SnakeInfo. This
-  must include the starting direction, the starting squares, and a color. Make
-  sure you aren't starting off running into yourself!
+  must include the starting direction, the starting square, and a color.
 - Next, go to the css page and create an entry at the bottom for your snake.
   It will need to look something like this, with your color and number input:
 ```
@@ -40,6 +39,10 @@ To do anything, you will first need to download or clone it.
     background: green;
     opacity: 1;
     transition: opacity .1s;
+  }
+
+  score-board3 {
+    background: green;
   }
 ```
 - If you are going to have more than 3 players, you will need to determine your own set of keybindings for the 4th and beyond.

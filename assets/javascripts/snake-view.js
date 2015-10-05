@@ -8,9 +8,11 @@
     this.numSnakes = options.numSnakes || 2;
     this.scoreBoards = [];
     for (var i = 1; i <= this.numSnakes; i++) {
+      var $el = $('<div class="score-board' + i + '">');
+      this.$rootEl.find('div.score-boards').append($el);
       this.scoreBoards.push(
-        new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board' + i))
-      )
+        new window.SnakeGame.ScoreView($el)
+      );
     }
     this.setupGame();
     this.pause = true;
