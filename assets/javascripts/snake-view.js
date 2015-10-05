@@ -7,6 +7,11 @@
     this.$rootEl = options.el;
     this.numSnakes = options.numSnakes || 2;
     this.scoreBoards = [];
+    this.addScoreBoards();
+    this.setupGame();
+  };
+
+  View.prototype.addScoreBoards = function (first_argument) {
     for (var i = 1; i <= this.numSnakes; i++) {
       var $el = $('<div class="score-board' + i + '">');
       this.$rootEl.find('div.score-boards').append($el);
@@ -14,14 +19,13 @@
         new window.SnakeGame.ScoreView($el)
       );
     }
-    this.setupGame();
-    this.pause = true;
   };
 
   View.prototype.setupGame = function () {
     this.board = new window.SnakeGame.Board({numSnakes: this.numSnakes});
     this.renderGrid();
     this.bindEvents();
+    this.refreshTimeoutId = setTimeout(this.step.bind(this), this.challenge);
   };
 
   View.prototype.bindEvents = function () {
