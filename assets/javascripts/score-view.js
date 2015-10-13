@@ -9,11 +9,11 @@
   };
 
   ScoreView.prototype.setUpScoreBoard = function () {
-    this.$vsScore = $('<h2 class="vs-score">')
-    this.$appleScore = $('<h2 class="apple-score">')
-    this.$vsScore.html('Vs Score: 0')
-    this.$appleScore.html('Apple Score: 0')
-    this.$rootEl.append(this.$vsScore).append(this.$appleScore)
+    this.$vsScore = $('<h2 class="vs-score">');
+    this.$appleScore = $('<h2 class="apple-score">');
+    this.$vsScore.html('Vs Score: 0');
+    this.$appleScore.html('Apple Score: 0');
+    this.$rootEl.append(this.$vsScore).append(this.$appleScore);
   };
 
   ScoreView.prototype.resetAppleScore = function () {

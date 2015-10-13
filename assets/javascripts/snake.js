@@ -37,6 +37,9 @@
 
   // movement
   Snake.prototype.move = function () {
+    if (this.getMove) {
+      this.getMove();
+    }
     var move = this.testMove(this.dir);
     this.segments.unshift(move);
     this.turning = false;
@@ -44,8 +47,9 @@
     this.eatApple();
   };
 
-  Snake.prototype.testMove = function(dir) {
-    var testMove = this.head().plus(Snake.moveDirs[dir])
+  Snake.prototype.testMove = function(dir, options) {
+    var head = (options && options.head) || this.head();
+    var testMove = head.plus(Snake.moveDirs[dir])
 
     return testMove;
   };
