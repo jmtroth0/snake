@@ -2,7 +2,7 @@
   window.SnakeGame = window.SnakeGame || {};
 
   var View = window.SnakeGame.View = function(options){
-    this.challenge = parseInt(options.challenge) || 5
+    this.challenge = parseInt(options.challenge) || 5;
     this.challenge = (100 - this.challenge * 10);
     this.$rootEl = options.el;
     this.numSnakes = options.numSnakes || 2;
@@ -10,7 +10,7 @@
     for (var i = 1; i <= this.numSnakes; i++) {
       this.scoreBoards.push(
         new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board' + i))
-      )
+      );
     }
     this.setupGame();
     this.pause = true;
@@ -31,8 +31,8 @@
     this.updateClasses(this.board.apples, 'snake-apple');
 
     this.board.snakes.forEach(function(snake, idx){
-      self.updateClasses(snake.segments, 'snake-segment' + (idx + 1))
-    })
+      self.updateClasses(snake.segments, 'snake-segment' + (idx + 1));
+    });
   };
 
   View.prototype.updateClasses = function(coords, className) {
@@ -40,9 +40,9 @@
 
     coords.forEach(function(coord){
       var location = coord.pos[0] * window.SnakeGame.Board.GRIDSIZE + coord.pos[1];
-      this.$grid.find('li').eq(location).addClass(className)
-    }.bind(this))
-  }
+      this.$grid.find('li').eq(location).addClass(className);
+    }.bind(this));
+  };
 
   View.prototype.renderGrid = function () {
     this.$grid = $("<ul class='grid'>");
@@ -75,15 +75,15 @@
         this.scoreBoards[idx].incrementAppleScore(10 - this.challenge / 10);
         snake.scoreChange = false;
       }
-    }.bind(this))
+    }.bind(this));
   };
 
   View.prototype.incrementScores = function () {
     for (var i = 0; i < this.board.snakes.length; i++) {
       if (!this.board.snakes[i].lost) {
-        this.scoreBoards[i].incrementVsScore(10 - this.challenge / 10)
-      };
-    };
+        this.scoreBoards[i].incrementVsScore(10 - this.challenge / 10);
+      }
+    }
   };
 
   // changing level
@@ -95,7 +95,7 @@
   View.prototype.submitChallenge = function (e) {
     e.preventDefault();
     this.toggleChallengeModal(e);
-    this.challenge = this.$rootEl.find('input#challenge').val()
+    this.challenge = this.$rootEl.find('input#challenge').val();
     this.challenge = (100 - this.challenge * 10);
     this.playAgain(e);
   };
@@ -110,10 +110,10 @@
   View.prototype.restartGame = function () {
     this.unBindGameOverEvents();
     this.board.over = false;
-    this.board.snakes.forEach(function(snake) { snake.lost = false });
+    this.board.snakes.forEach(function(snake) { snake.lost = false; });
     this.scoreBoards.forEach(function(board){
       board.resetAppleScore();
-    })
+    });
   };
 
   View.prototype.bindRestartEvents = function () {
@@ -155,13 +155,13 @@
     } else {
       clearTimeout(this.refreshTimeoutId);
     }
-    this.pause = !this.pause
+    this.pause = !this.pause;
   };
 
   View.GENERAL_KEYS = {
     32: true, // start again
     80: true  // pause or start
-  }
+  };
 
   View.PLAYER_ONE_KEYS = {
     // arrow keys
@@ -188,18 +188,21 @@
   };
 
   View.prototype.handleKeyEvent = function (e) {
-    e.preventDefault();
 
     // pause and restart (p and spacebar)
     if (View.GENERAL_KEYS[e.keyCode]) {
-      this.handleGeneralKeyEvent(e)
+      this.handleGeneralKeyEvent(e);
     } else if (View.PLAYER_ONE_KEYS[e.keyCode]) {
-      this.board.snakes[0].turn(View.PLAYER_ONE_KEYS[e.keyCode])
+      this.board.snakes[0].turn(View.PLAYER_ONE_KEYS[e.keyCode]);
     } else if (View.PLAYER_TWO_KEYS[e.keyCode]) {
-      this.board.snakes[1].turn(View.PLAYER_TWO_KEYS[e.keyCode])
+      this.board.snakes[1].turn(View.PLAYER_TWO_KEYS[e.keyCode]);
     } else if (View.PLAYER_THREE_KEYS[e.keyCode]) {
-      this.board.snakes[2].turn(View.PLAYER_THREE_KEYS[e.keyCode])
+      this.board.snakes[2].turn(View.PLAYER_THREE_KEYS[e.keyCode]);
+    } else {
+      return;
     }
+
+    e.preventDefault();
   };
 
   View.prototype.handleGeneralKeyEvent = function (e) {
@@ -213,6 +216,6 @@
     default:
       break;
     }
-  }
+  };
 
 })();
