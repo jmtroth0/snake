@@ -33,7 +33,7 @@
     "W": [ 0, -1],
     "S": [ 1,  0],
     "E": [ 0,  1],
-  }
+  };
 
   // movement
   Snake.prototype.move = function () {
@@ -49,22 +49,26 @@
 
   Snake.prototype.testMove = function(dir, options) {
     var head = (options && options.head) || this.head();
-    var testMove = head.plus(Snake.moveDirs[dir])
+    var testMove = head.plus(Snake.moveDirs[dir]);
 
     return testMove;
   };
 
   Snake.prototype.turn = function (dir) {
-    if (this.turning) { return }
+    if (this.turning) { return; }
     if (((this.dir == "N" || this.dir == "S") && (dir == "N" || dir == "S")) ||
         ((this.dir == "W" || this.dir == "E") && (dir == "W" || dir == "E")))
-      { return }
+      { return; }
     this.dir = dir;
     this.turning = true;
   };
 
   Snake.prototype._moveTail = function () {
-    this.growTurns > 0 ? this.growTurns-- : this.segments.pop();
+    if (this.growTurns > 0) {
+      this.growTurns--;
+    } else {
+      this.segments.pop();
+    }
   };
 
   Snake.prototype.eatApple = function () {
@@ -95,7 +99,7 @@
     // requires list of all snakes, own idx in that list
   Snake.prototype.checkRanIntoOther = function (options) {
     for (var snakeNum = 0; snakeNum < options.otherSnakes.length; snakeNum++) {
-      if (snakeNum === options.snakeIdx) { continue };
+      if (snakeNum === options.snakeIdx) { continue; }
       var otherSnake = options.otherSnakes[snakeNum];
       for (var i = 0; i < otherSnake.length(); i++) {
         if (otherSnake.segments[i].equals(this.head().pos)){
@@ -115,8 +119,8 @@
     for (var i = 0; i < this.segments.length; i++) {
       if (this.segments[i].equals(pos)){
         return true;
-      };
-    };
+      }
+    }
     return false;
   };
 
