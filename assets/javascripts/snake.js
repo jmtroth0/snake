@@ -56,8 +56,7 @@
 
   Snake.prototype.turn = function (dir) {
     if (this.turning) { return; }
-    if (((this.dir == "N" || this.dir == "S") && (dir == "N" || dir == "S")) ||
-        ((this.dir == "W" || this.dir == "E") && (dir == "W" || dir == "E")))
+    if (this.oppDir(this.dir, dir))
       { return; }
     this.dir = dir;
     this.turning = true;
@@ -130,5 +129,10 @@
 
   Snake.prototype.length = function () {
     return this.segments.length;
+  };
+
+  Snake.prototype.oppDir = function (currentDir, otherDir) {
+    return (((currentDir == "N" || currentDir == "S") && (otherDir == "N" || otherDir == "S")) ||
+      ((currentDir == "W" || currentDir == "E") && (otherDir == "W" || otherDir == "E")));
   };
 })();

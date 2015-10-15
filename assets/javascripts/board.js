@@ -67,10 +67,7 @@
   };
 
   Board.prototype.checkForHeadOnCollision = function (snakeResults) {
-    var numLosses = 0;
-    snakeResults.forEach(function (result) {
-      if (!!result); numLosses++;
-    });
+    numLosses = this.countLosses(snakeResults);
     if (numLosses > 1) {
       this.gameOverText = "Draw";
       return true;
@@ -87,12 +84,20 @@
     }
   };
 
+  Board.prototype.countLosses = function (snakeResults) {
+    var numLosses = 0;
+    snakeResults.forEach(function (result) {
+      if (!!result) numLosses++;
+    });
+    return numLosses;
+  };
+
   // board step handlers
   Board.prototype.step = function(){
     var self = this;
     this.snakes.forEach(function (snake){
       snake.move();
-    })
+    });
     this.turns++;
   };
 
@@ -104,7 +109,7 @@
     }.bind(this))){
       var newApple = randomCoord();
       this.apples[this.apples.length - 1] = newApple;
-    };
+    }
   };
 
   Board.prototype.replaceApple = function (appleIdx) {
@@ -114,7 +119,7 @@
 
   Board.prototype.render = function () {
     return this;
-  }
+  };
 
   // Board.prototype.renderASCII = function () {
   //   var view = "";
@@ -141,6 +146,6 @@
     var x = Math.floor(Math.random() * Board.GRIDSIZE);
     var y = Math.floor(Math.random() * Board.GRIDSIZE);
     return new window.SnakeGame.Coord([x,y]);
-  }
+  };
 
 })();
