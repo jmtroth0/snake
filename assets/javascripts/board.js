@@ -3,7 +3,7 @@
 
   // just requires numSnakes for now
   var Board = window.SnakeGame.Board = function(options){
-    this.snakes = []
+    this.snakes = [];
     this.grid = [];
     this.apples = [];
     this.setSnakesAndApples(options.numSnakes);
@@ -19,9 +19,9 @@
       var row = [];
       for (var j = 0; j < Board.GRIDSIZE; j++) {
         row.push("null");
-      };
+      }
       this.grid.push(row);
-    };
+    }
   };
 
   Board.prototype.setSnakesAndApples = function (numSnakes) {
@@ -47,7 +47,7 @@
       snake.lost = true;
       return true;
     } else if (snake.ranIntoSelf()) {
-      this.gameOverText = snake.color + " ran into self"
+      this.gameOverText = snake.color + " ran into self";
       snake.lost = true;
       return true;
     } else {
@@ -62,14 +62,14 @@
         snakeIdx: i,
         otherSnakes: this.snakes
       }));
-    };
+    }
     return this.checkForHeadOnCollision(snakeResults);
   };
 
   Board.prototype.checkForHeadOnCollision = function (snakeResults) {
     var numLosses = 0;
     snakeResults.forEach(function (result) {
-      if (!!result) { numLosses++ };
+      if (!!result) { numLosses++; }
     });
     if (numLosses > 1) {
       this.gameOverText = "Draw";
@@ -80,7 +80,7 @@
           this.snakes[snakeIdx].lost = true;
           this.gameOverText = result;
         }
-      }.bind(this))
+      }.bind(this));
       return true;
     } else {
       return false;
@@ -92,19 +92,21 @@
     var self = this;
     this.snakes.forEach(function (snake){
       snake.move();
-    })
+    });
     this.turns++;
   };
 
   // Apple handlers
   Board.prototype.generateApple = function () {
     this.apples.push(randomCoord());
-    while (this.snakes.some(function (snake) {
-      return snake.segmentsIncludes(this.apples[this.apples.length - 1].pos);
-    }.bind(this))){
-      var newApple = randomCoord();
-      this.apples[this.apples.length - 1] = newApple;
-    };
+    for (var i = 0; i < this.apples.length; i++) {
+      while (this.snakes.some(function (snake) {
+        return snake.segmentsIncludes(this.apples[i].pos);
+      }.bind(this))){
+        var newApple = randomCoord();
+        this.apples[i] = newApple;
+      }
+    }
   };
 
   Board.prototype.replaceApple = function (appleIdx) {
