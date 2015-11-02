@@ -26,7 +26,7 @@
 
   Board.prototype.setSnakesAndApples = function (numSnakes) {
     for (var i = 1; i <= numSnakes; i++) {     // for now max 2
-      this.snakes.push(new window.SnakeGame.Snake(i, this));
+      this.snakes.push(new window.SnakeGame.ComputerSnake(i, this));
       this.apples.push(randomCoord());
     }
   };

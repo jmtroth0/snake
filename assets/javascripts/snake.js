@@ -111,7 +111,7 @@
 
   // snake utils
   Snake.prototype.outOfBounds = function () {
-    return this.head().outOfBounds();
+    return this.head().outOfBounds(); 
   };
 
   Snake.prototype.segmentsIncludes = function (pos) {
@@ -132,7 +132,9 @@
   };
 
   Snake.prototype.oppDir = function (currentDir, otherDir) {
-    return (((currentDir == "N" || currentDir == "S") && (otherDir == "N" || otherDir == "S")) ||
-      ((currentDir == "W" || currentDir == "E") && (otherDir == "W" || otherDir == "E")));
+    return ((currentDir == "N" && otherDir == "S") ||
+            (currentDir == "S" && otherDir == "N") ||
+            (currentDir == "E" && otherDir == "W") ||
+            (currentDir == "W" && otherDir == "E"));
   };
 })();
