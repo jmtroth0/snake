@@ -57,10 +57,12 @@ ul.grid > li.snake-segment1 {
 
 .score-board1 {
   color: brown;
+  top: 50px;
 }
 
 .score-board2 {
   color: blue;
+  top: 150px;
 }
 
 .score-board3 {
