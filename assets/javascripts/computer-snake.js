@@ -8,8 +8,8 @@
 
   ComputerSnake.prototype = Object.create(window.SnakeGame.Snake.prototype);
 
-  ComputerSnake.prototype.target = function () {
-    return this.board.apples[0];
+  ComputerSnake.prototype.targets = function () {
+    return this.board.apples;
   };
 
   ComputerSnake.prototype.getMove = function () {
@@ -33,10 +33,14 @@
   };
 
   ComputerSnake.prototype.sortMovesByPreference = function (moves) {
-    var target = this.target();
+    var targets = this.targets();
     moves.forEach(function(move){
-      move.score = Math.abs(target.pos[0] - move.move.pos[0]) +
-                   Math.abs(target.pos[1] - move.move.pos[1]);
+      possibleScores = [];
+      targets.forEach(function(target){
+        possibleScores.push(Math.abs(target.pos[0] - move.move.pos[0]) +
+                            Math.abs(target.pos[1] - move.move.pos[1]));
+      });
+      move.score = Math.min.apply({}, possibleScores);
     });
     moves.sort(function(left, right){
       if (left.score <= right.score) return -1;

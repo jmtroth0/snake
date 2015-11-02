@@ -111,7 +111,7 @@
 
   // snake utils
   Snake.prototype.outOfBounds = function () {
-    return this.head().outOfBounds(); 
+    return this.head().outOfBounds();
   };
 
   Snake.prototype.segmentsIncludes = function (pos) {
