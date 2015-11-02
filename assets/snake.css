@@ -46,7 +46,8 @@ ul.grid > li.snake-segment1 {
 }
 
 .score-board1,
-.score-board2 {
+.score-board2,
+.score-board3 {
   position: absolute;
   right: 30px;
 }
@@ -61,8 +62,19 @@ ul.grid > li.snake-segment1 {
   top: 150px;
 }
 
+.score-board3 {
+  color: purple;
+  top: 250px;
+}
+
 ul.grid > li.snake-segment2 {
   background: blue;
+  opacity: 1;
+  transition: opacity .1s;
+}
+
+ul.grid > li.snake-segment3 {
+  background: purple;
   opacity: 1;
   transition: opacity .1s;
 }

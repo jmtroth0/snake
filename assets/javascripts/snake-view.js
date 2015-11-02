@@ -2,7 +2,7 @@
   window.SnakeGame = window.SnakeGame || {};
 
   var View = window.SnakeGame.View = function(options){
-    this.challenge = parseInt(options.challenge) || 5;
+    this.challenge = parseInt(options.challenge) || 4;
     this.challenge = (100 - this.challenge * 5);
     this.$rootEl = options.el;
     this.numSnakes = options.numSnakes || 2;
@@ -12,12 +12,15 @@
         new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board' + i))
       );
     }
-    this.setupGame();
+    this.setupGame(options.numComps);
     this.pause = true;
   };
 
-  View.prototype.setupGame = function () {
-    this.board = new window.SnakeGame.Board({numSnakes: this.numSnakes});
+  View.prototype.setupGame = function (numComps) {
+    this.board = new window.SnakeGame.Board({
+      numSnakes: this.numSnakes,
+      numComps: numComps
+    });
     this.renderGrid();
     this.bindEvents();
   };
@@ -81,7 +84,7 @@
   View.prototype.incrementScores = function () {
     for (var i = 0; i < this.board.snakes.length; i++) {
       if (!this.board.snakes[i].lost) {
-        this.scoreBoards[i].incrementVsScore((snake[i].length() - 1) / 3 * 5);
+        this.scoreBoards[i].incrementVsScore(this.challenge);
       }
     }
   };

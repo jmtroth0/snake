@@ -6,7 +6,7 @@
     this.snakes = [];
     this.grid = [];
     this.apples = [];
-    this.setSnakesAndApples(options.numSnakes);
+    this.setSnakesAndApples(options.numSnakes, options.numComps);
     this.setupBoard();
     this.turns = 0;
     this.over = false;
@@ -24,8 +24,12 @@
     }
   };
 
-  Board.prototype.setSnakesAndApples = function (numSnakes) {
-    for (var i = 1; i <= numSnakes; i++) {     // for now max 2
+  Board.prototype.setSnakesAndApples = function (numSnakes, numComps) {
+    for (var i = 1; i <= numSnakes - numComps; i++) {     // for now max 2
+      this.snakes.push(new window.SnakeGame.Snake(i, this));
+      this.apples.push(randomCoord());
+    }
+    for (i; i <= numSnakes; i++){
       this.snakes.push(new window.SnakeGame.ComputerSnake(i, this));
       this.apples.push(randomCoord());
     }

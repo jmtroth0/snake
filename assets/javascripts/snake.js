@@ -25,6 +25,11 @@
       dir: "W",
       startingPoses: [[26,26]],
       color: "blue",
+    },
+    3: {
+      dir: "S",
+      startingPoses: [[26, 4]],
+      color: "purple"
     }
   };
 
@@ -71,11 +76,11 @@
   };
 
   Snake.prototype.eatApple = function () {
-    this.board.apples.forEach(function(apple){
+    this.board.apples.forEach(function(apple, idx){
       if (this.head().equals(apple.pos)){
         this.growTurns += 3;
         this.scoreChange = true;
-        this.board.replaceApple();
+        this.board.replaceApple(idx);
         return true;
       }
     }.bind(this));
@@ -114,9 +119,10 @@
     return this.head().outOfBounds();
   };
 
-  Snake.prototype.segmentsIncludes = function (pos) {
-    for (var i = 0; i < this.segments.length; i++) {
-      if (this.segments[i].equals(pos)){
+  Snake.prototype.segmentsIncludes = function (pos, segments) {
+    segments = segments || this.segments;
+    for (var i = 0; i < segments.length; i++) {
+      if (segments[i].equals(pos)){
         return true;
       }
     }
