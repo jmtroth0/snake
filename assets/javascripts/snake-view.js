@@ -3,7 +3,7 @@
 
   var View = window.SnakeGame.View = function(options){
     this.challenge = parseInt(options.challenge) || 5;
-    this.challenge = (100 - this.challenge * 10);
+    this.challenge = (100 - this.challenge * 5);
     this.$rootEl = options.el;
     this.numSnakes = options.numSnakes || 2;
     this.scoreBoards = [];
@@ -72,7 +72,7 @@
   View.prototype.incrementAppleScores = function () {
     this.board.snakes.forEach(function(snake, idx){
       if (snake.scoreChange) {
-        this.scoreBoards[idx].incrementAppleScore(10 - this.challenge / 10);
+        this.scoreBoards[idx].incrementAppleScore(10 - this.challenge / 5);
         snake.scoreChange = false;
       }
     }.bind(this));

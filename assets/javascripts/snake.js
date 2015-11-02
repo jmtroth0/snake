@@ -14,7 +14,7 @@
   };
 
   // possible snakes
-  // Need direction, starting position (recommended 3 segments, and color)
+  // Need direction, starting position (recommended another corner and color)
   Snake.snakeInfo = {
     1: {
       dir: "E",
@@ -23,7 +23,7 @@
     },
     2: {
       dir: "W",
-      startingPoses: [[46,46]],
+      startingPoses: [[26,26]],
       color: "blue",
     }
   };

@@ -12,7 +12,7 @@
     this.over = false;
   };
 
-  Board.GRIDSIZE = 50;
+  Board.GRIDSIZE = 30;
 
   Board.prototype.setupBoard = function () {
     for (var i = 0; i < Board.GRIDSIZE; i++) {
@@ -26,7 +26,7 @@
 
   Board.prototype.setSnakesAndApples = function (numSnakes) {
     for (var i = 1; i <= numSnakes; i++) {     // for now max 2
-      this.snakes.push(new window.SnakeGame.ComputerSnake(i, this));
+      this.snakes.push(new window.SnakeGame.Snake(i, this));
       this.apples.push(randomCoord());
     }
   };
