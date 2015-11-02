@@ -72,7 +72,7 @@
   View.prototype.incrementAppleScores = function () {
     this.board.snakes.forEach(function(snake, idx){
       if (snake.scoreChange) {
-        this.scoreBoards[idx].incrementAppleScore(this.challenge / 20);
+        this.scoreBoards[idx].incrementAppleScore((snake.length() - 1) / 3 * 5);
         snake.scoreChange = false;
       }
     }.bind(this));
@@ -81,7 +81,7 @@
   View.prototype.incrementScores = function () {
     for (var i = 0; i < this.board.snakes.length; i++) {
       if (!this.board.snakes[i].lost) {
-        this.scoreBoards[i].incrementVsScore(10 - this.challenge / 5);
+        this.scoreBoards[i].incrementVsScore((snake[i].length() - 1) / 3 * 5);
       }
     }
   };
