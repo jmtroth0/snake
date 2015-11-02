@@ -14,7 +14,7 @@
   };
 
   // possible snakes
-  // Need direction, starting position (recommended 3 segments, and color)
+  // Need direction, starting position (recommended another corner and color)
   Snake.snakeInfo = {
     1: {
       dir: "E",
@@ -23,8 +23,13 @@
     },
     2: {
       dir: "W",
-      startingPoses: [[46,46]],
+      startingPoses: [[26,26]],
       color: "blue",
+    },
+    3: {
+      dir: "N",
+      startingPoses: [[26, 4]],
+      color: "purple"
     }
   };
 
@@ -33,43 +38,49 @@
     "W": [ 0, -1],
     "S": [ 1,  0],
     "E": [ 0,  1],
-  }
+  };
 
   // movement
   Snake.prototype.move = function () {
-    var move = this.testMove();
+    if (this.getMove) {
+      this.getMove();
+    }
+    var move = this.testMove(this.dir);
     this.segments.unshift(move);
     this.turning = false;
     this._moveTail();
     this.eatApple();
   };
 
-  Snake.prototype.testMove = function() {
-    var testMove;
-    testMove = this.segments[0].plus(Snake.moveDirs[this.dir])
+  Snake.prototype.testMove = function(dir, options) {
+    var head = (options && options.head) || this.head();
+    var testMove = head.plus(Snake.moveDirs[dir]);
 
     return testMove;
   };
 
   Snake.prototype.turn = function (dir) {
-    if (this.turning) { return }
-    if (((this.dir == "N" || this.dir == "S") && (dir == "N" || dir == "S")) ||
-        ((this.dir == "W" || this.dir == "E") && (dir == "W" || dir == "E")))
-      { return }
+    if (this.turning) { return; }
+    if (this.oppDir(this.dir, dir))
+      { return; }
     this.dir = dir;
     this.turning = true;
   };
 
   Snake.prototype._moveTail = function () {
-    this.growTurns > 0 ? this.growTurns-- : this.segments.pop();
+    if (this.growTurns > 0) {
+      this.growTurns--;
+    } else {
+      this.segments.pop();
+    }
   };
 
   Snake.prototype.eatApple = function () {
-    this.board.apples.forEach(function(apple){
+    this.board.apples.forEach(function(apple, idx){
       if (this.head().equals(apple.pos)){
         this.growTurns += 3;
         this.scoreChange = true;
-        this.board.replaceApple();
+        this.board.replaceApple(idx);
         return true;
       }
     }.bind(this));
@@ -92,7 +103,7 @@
     // requires list of all snakes, own idx in that list
   Snake.prototype.checkRanIntoOther = function (options) {
     for (var snakeNum = 0; snakeNum < options.otherSnakes.length; snakeNum++) {
-      if (snakeNum === options.snakeIdx) { continue };
+      if (snakeNum === options.snakeIdx) { continue; }
       var otherSnake = options.otherSnakes[snakeNum];
       for (var i = 0; i < otherSnake.length(); i++) {
         if (otherSnake.segments[i].equals(this.head().pos)){
@@ -108,12 +119,13 @@
     return this.head().outOfBounds();
   };
 
-  Snake.prototype.segmentsIncludes = function (pos) {
-    for (var i = 0; i < this.segments.length; i++) {
-      if (this.segments[i].equals(pos)){
+  Snake.prototype.segmentsIncludes = function (pos, segments) {
+    segments = segments || this.segments;
+    for (var i = 0; i < segments.length; i++) {
+      if (segments[i].equals(pos)){
         return true;
-      };
-    };
+      }
+    }
     return false;
   };
 
@@ -123,5 +135,12 @@
 
   Snake.prototype.length = function () {
     return this.segments.length;
+  };
+
+  Snake.prototype.oppDir = function (currentDir, otherDir) {
+    return ((currentDir == "N" && otherDir == "S") ||
+            (currentDir == "S" && otherDir == "N") ||
+            (currentDir == "E" && otherDir == "W") ||
+            (currentDir == "W" && otherDir == "E"));
   };
 })();

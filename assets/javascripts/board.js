@@ -6,13 +6,13 @@
     this.snakes = [];
     this.grid = [];
     this.apples = [];
-    this.setSnakesAndApples(options.numSnakes);
+    this.setSnakesAndApples(options.numSnakes, options.numComps);
     this.setupBoard();
     this.turns = 0;
     this.over = false;
   };
 
-  Board.GRIDSIZE = 50;
+  Board.GRIDSIZE = 30;
 
   Board.prototype.setupBoard = function () {
     for (var i = 0; i < Board.GRIDSIZE; i++) {
@@ -24,9 +24,13 @@
     }
   };
 
-  Board.prototype.setSnakesAndApples = function (numSnakes) {
-    for (var i = 1; i <= numSnakes; i++) {     // for now max 2
+  Board.prototype.setSnakesAndApples = function (numSnakes, numComps) {
+    for (var i = 1; i <= numSnakes - numComps; i++) {     // for now max 2
       this.snakes.push(new window.SnakeGame.Snake(i, this));
+      this.apples.push(randomCoord());
+    }
+    for (i; i <= numSnakes; i++){
+      this.snakes.push(new window.SnakeGame.ComputerSnake(i, this));
       this.apples.push(randomCoord());
     }
   };
@@ -67,10 +71,7 @@
   };
 
   Board.prototype.checkForHeadOnCollision = function (snakeResults) {
-    var numLosses = 0;
-    snakeResults.forEach(function (result) {
-      if (!!result) { numLosses++; }
-    });
+    numLosses = this.countLosses(snakeResults);
     if (numLosses > 1) {
       this.gameOverText = "Draw";
       return true;
@@ -87,6 +88,14 @@
     }
   };
 
+  Board.prototype.countLosses = function (snakeResults) {
+    var numLosses = 0;
+    snakeResults.forEach(function (result) {
+      if (!!result) numLosses++;
+    });
+    return numLosses;
+  };
+
   // board step handlers
   Board.prototype.step = function(){
     var self = this;
@@ -99,13 +108,11 @@
   // Apple handlers
   Board.prototype.generateApple = function () {
     this.apples.push(randomCoord());
-    for (var i = 0; i < this.apples.length; i++) {
-      while (this.snakes.some(function (snake) {
-        return snake.segmentsIncludes(this.apples[i].pos);
-      }.bind(this))){
-        var newApple = randomCoord();
-        this.apples[i] = newApple;
-      }
+    while (this.snakes.some(function (snake) {
+      return snake.segmentsIncludes(this.apples[this.apples.length - 1].pos);
+    }.bind(this))){
+      var newApple = randomCoord();
+      this.apples[this.apples.length - 1] = newApple;
     }
   };
 
@@ -116,7 +123,7 @@
 
   Board.prototype.render = function () {
     return this;
-  }
+  };
 
   // Board.prototype.renderASCII = function () {
   //   var view = "";
@@ -143,6 +150,6 @@
     var x = Math.floor(Math.random() * Board.GRIDSIZE);
     var y = Math.floor(Math.random() * Board.GRIDSIZE);
     return new window.SnakeGame.Coord([x,y]);
-  }
+  };
 
 })();

@@ -20,21 +20,23 @@ body {
   font-family: sans-serif;
   text-align: center;
   font-weight: bold;
+  background: #ccc;
 }
 
 ul.grid {
   margin: 0 auto;
   position: relative;
   border: 5px solid black;
-  width: 500px;
-  height: 500px;
+  background: #eee;
+  width: 600px;
+  height: 600px;
 }
 
 ul.grid > li {
   position: relative;
   float: left;
-  width: 10px;
-  height: 10px;
+  width: 20px;
+  height: 20px;
   opacity: 0;
   transition: opacity .1s;
 }
@@ -45,7 +47,9 @@ ul.grid > li.snake-segment1 {
   transition: opacity .1s;
 }
 
-.score-boards {
+.score-board1,
+.score-board2,
+.score-board3 {
   position: absolute;
   right: 30px;
   top: 50px;
@@ -59,8 +63,19 @@ ul.grid > li.snake-segment1 {
   color: blue;
 }
 
+.score-board3 {
+  color: purple;
+  top: 250px;
+}
+
 ul.grid > li.snake-segment2 {
   background: blue;
+  opacity: 1;
+  transition: opacity .1s;
+}
+
+ul.grid > li.snake-segment3 {
+  background: purple;
   opacity: 1;
   transition: opacity .1s;
 }
