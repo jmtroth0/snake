@@ -49,8 +49,12 @@
   };
 
   ComputerSnake.prototype.validMove = function (test) {
+    var segments = [];
+    this.board.snakes.forEach(function(snake){
+      segments = segments.concat(snake.segments);
+    });
     return (!test.move.outOfBounds() &&
-            !this.segmentsIncludes(test.move.pos) &&
+            !this.segmentsIncludes(test.move.pos, segments) &&
             !this.oppDir(this.dir, test.dir) );
   };
 })();
