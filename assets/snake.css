@@ -20,12 +20,14 @@ body {
   font-family: sans-serif;
   text-align: center;
   font-weight: bold;
+  background: #ccc;
 }
 
 ul.grid {
   margin: 0 auto;
   position: relative;
   border: 5px solid black;
+  background: #eee;
   width: 600px;
   height: 600px;
 }

@@ -25,8 +25,8 @@
     this.$vsScore.html('Vs Score: ' + this.vsScore);
   };
 
-  ScoreView.prototype.incrementVsScore = function (level) {
-    this.vsScore += level;
+  ScoreView.prototype.incrementVsScore = function () {
+    this.vsScore += this.appleScore;
     this.placeVsScore();
   };
 
@@ -34,8 +34,8 @@
     this.$appleScore.html('Apple Score: ' + this.appleScore);
   };
 
-  ScoreView.prototype.incrementAppleScore = function (level) {
-    this.appleScore += level;
+  ScoreView.prototype.incrementAppleScore = function (score) {
+    this.appleScore += score;
     this.placeAppleScore();
   };
 })();

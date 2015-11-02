@@ -27,7 +27,7 @@
       color: "blue",
     },
     3: {
-      dir: "S",
+      dir: "N",
       startingPoses: [[26, 4]],
       color: "purple"
     }

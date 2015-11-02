@@ -5,21 +5,22 @@
     this.challenge = parseInt(options.challenge) || 4;
     this.challenge = (100 - this.challenge * 5);
     this.$rootEl = options.el;
-    this.numSnakes = options.numSnakes || 2;
+    this.numSnakes = options.numSnakes;
+    this.numComps = options.numComps || 0;
     this.scoreBoards = [];
     for (var i = 1; i <= this.numSnakes; i++) {
       this.scoreBoards.push(
         new window.SnakeGame.ScoreView(this.$rootEl.find('div.score-board' + i))
       );
     }
-    this.setupGame(options.numComps);
+    this.setupGame();
     this.pause = true;
   };
 
-  View.prototype.setupGame = function (numComps) {
+  View.prototype.setupGame = function () {
     this.board = new window.SnakeGame.Board({
       numSnakes: this.numSnakes,
-      numComps: numComps
+      numComps: this.numComps
     });
     this.renderGrid();
     this.bindEvents();
@@ -75,7 +76,7 @@
   View.prototype.incrementAppleScores = function () {
     this.board.snakes.forEach(function(snake, idx){
       if (snake.scoreChange) {
-        this.scoreBoards[idx].incrementAppleScore((snake.length() - 1) / 3 * 5);
+        this.scoreBoards[idx].incrementAppleScore((snake.length() - 1) / 3);
         snake.scoreChange = false;
       }
     }.bind(this));
@@ -84,7 +85,7 @@
   View.prototype.incrementScores = function () {
     for (var i = 0; i < this.board.snakes.length; i++) {
       if (!this.board.snakes[i].lost) {
-        this.scoreBoards[i].incrementVsScore(this.challenge);
+        this.scoreBoards[i].incrementVsScore();
       }
     }
   };
@@ -107,7 +108,7 @@
   View.prototype.playAgain = function (e) {
     e.preventDefault();
     this.restartGame();
-    this.setupGame();
+    this.setupGame(this.numSnakes);
   };
 
   View.prototype.restartGame = function () {
