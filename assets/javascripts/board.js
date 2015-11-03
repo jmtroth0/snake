@@ -83,7 +83,7 @@
     }
     snakeResults.forEach(function(result, snakeIdx){
       if (result) { this.snakes[snakeIdx].lost = true; }
-    });
+    }.bind(this));
     return true;
   };
 
