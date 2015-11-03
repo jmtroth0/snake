@@ -74,18 +74,17 @@
     numLosses = this.countLosses(snakeResults);
     if (numLosses > 1) {
       this.gameOverText = "Draw";
-      return true;
     } else if (numLosses === 1) {
       snakeResults.forEach(function(result, snakeIdx){
-        if (result) {
-          this.snakes[snakeIdx].lost = true;
-          this.gameOverText = result;
-        }
+        if (result) { this.gameOverText = result; }
       }.bind(this));
-      return true;
     } else {
       return false;
     }
+    snakeResults.forEach(function(result, snakeIdx){
+      if (result) { this.snakes[snakeIdx].lost = true; }
+    });
+    return true;
   };
 
   Board.prototype.countLosses = function (snakeResults) {
