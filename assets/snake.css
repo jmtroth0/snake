@@ -85,6 +85,7 @@ ul.grid > li.snake-segment3 {
 
 ul.grid > li.snake-apple {
   background: green;
+  border-radius: 40%;
   opacity: 1;
   transition: opacity .1s;
 }
