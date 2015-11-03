@@ -23,13 +23,27 @@ body {
   background: #ccc;
 }
 
-ul.grid {
+div.snake-game {
   margin: 0 auto;
+  width: 720px;
+  border-top: 8px solid #aaa;
+  border-left: 8px solid #999;
+  border-right: 8px solid #888;
+  border-bottom: 8px solid #888;
+}
+
+div.game-board {
+  width: 490px;
+  height: 490px;
+  float: left;
+}
+
+ul.grid {
   position: relative;
   border: 5px solid black;
   background: #eee;
-  width: 510px;
-  height: 510px;
+  width: 480px;
+  height: 480px;
 }
 
 ul.grid > li {
@@ -38,7 +52,8 @@ ul.grid > li {
   width: 15px;
   height: 15px;
   opacity: 0;
-  border: 1px solid #eee;
+  border-top: 1px solid #eee;
+  border-right: 1px solid #eee;
   transition: opacity .05s;
 }
 
@@ -76,28 +91,26 @@ ul.grid > li.headW {
   border-radius: 50% 0 0 50%;
 }
 
-.score-board1,
-.score-board2,
-.score-board3 {
-  position: absolute;
-  right: 30px;
-  top: 50px;
+.score-boards {
+  position: relative;
+  height: 470px;
+  width: 220px;
+  padding: 20px 0 0 10px;
   z-index: 5;
+  float: left;
+  background: black;
 }
 
 .score-board1 {
   color: brown;
-  top: 50px;
 }
 
 .score-board2 {
   color: blue;
-  top: 150px;
 }
 
 .score-board3 {
   color: purple;
-  top: 250px;
 }
 
 ul.grid > li.snake-apple {
