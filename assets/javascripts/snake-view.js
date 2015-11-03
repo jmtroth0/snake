@@ -145,10 +145,10 @@
   View.prototype.gameOverProtocol = function () {
     this.board.over = true;
     this.incrementScores();
-    this.addGameOverBox();
     if (this.numSnakes === this.numComps) {
-      setTimeout(this.playAgain.bind(this), 1000);
+      setTimeout(this.playAgain.bind(this), 3000);
     } else {
+      this.addGameOverBox();
       this.bindRestartEvents();
     }
   };
