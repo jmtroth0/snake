@@ -18,6 +18,15 @@
     this.$rootEl.on("click", 'button#vs-comp',
       this.initializeGame.bind(this, {numSnakes: 2, numComps: 1})
     );
+    this.$rootEl.on("click", 'button#screensaver1',
+      this.initializeGame.bind(this, {numSnakes: 1, numComps: 1})
+    );
+    this.$rootEl.on("click", 'button#screensaver2',
+      this.initializeGame.bind(this, {numSnakes: 2, numComps: 2})
+    );
+    this.$rootEl.on("click", 'button#screensaver3',
+      this.initializeGame.bind(this, {numSnakes: 3, numComps: 3})
+    );
   };
 
   SplashPageView.prototype.removeModal = function () {

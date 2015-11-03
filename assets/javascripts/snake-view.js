@@ -112,7 +112,7 @@
 
   // on game over stuff
   View.prototype.playAgain = function (e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     this.restartGame();
     this.setupGame(this.numSnakes);
   };
@@ -146,7 +146,11 @@
     this.board.over = true;
     this.incrementScores();
     this.addGameOverBox();
-    this.bindRestartEvents();
+    if (this.numSnakes === this.numComps) {
+      setTimeout(this.playAgain.bind(this), 1000);
+    } else {
+      this.bindRestartEvents();
+    }
   };
 
   View.prototype.addGameOverBox = function () {
