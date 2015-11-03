@@ -42,13 +42,15 @@
 
     this.board.snakes.forEach(function(snake, idx){
       self.updateClasses(snake.segments, 'snake-segment' + (idx + 1));
+      var headLocation = snake.head().pos[0] * window.SnakeGame.Board.GRIDSIZE + snake.head().pos[1];
+      self.$grid.find('li').eq(headLocation).addClass("head" + snake.dir);
     });
   };
 
   View.prototype.updateClasses = function(coords, className) {
     this.$grid.find('li').filter("." + className).removeClass();
 
-    coords.forEach(function(coord){
+    coords.forEach(function(coord, idx){
       var location = coord.pos[0] * window.SnakeGame.Board.GRIDSIZE + coord.pos[1];
       this.$grid.find('li').eq(location).addClass(className);
     }.bind(this));
