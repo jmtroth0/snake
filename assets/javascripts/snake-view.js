@@ -82,7 +82,7 @@
   View.prototype.incrementAppleScores = function () {
     this.board.snakes.forEach(function(snake, idx){
       if (snake.scoreChange) {
-        this.scoreBoards[idx].incrementAppleScore((snake.length() - 1) / 3);
+        this.scoreBoards[idx].incrementAppleScore(snake.length());
         snake.scoreChange = false;
       }
     }.bind(this));
@@ -155,7 +155,8 @@
     $gameOver.append("<p>" + this.board.gameOverText + "</p>");
     $gameOver.append("<button id='new-game'>Play Again?</button>");
     $gameOver.append("<button id='adjust-difficulty'>Adjust Difficulty?</button>");
-    this.$rootEl.append($gameOver);
+    var $modal = $('<div class="game-over-modal">').append($gameOver);
+    this.$rootEl.append($modal);
   };
 
   // on keypress of 'p'
@@ -191,10 +192,10 @@
 
   View.PLAYER_THREE_KEYS = {
     // ijkl
-    75: "N",
-    76: "W",
-    73: "S",
-    74: "E",
+    73: "N",
+    74: "W",
+    75: "S",
+    76: "E",
   };
 
   View.prototype.handleKeyEvent = function (e) {

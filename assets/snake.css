@@ -1,4 +1,4 @@
-html, body, figure, figcaption, ul, li, h1 {
+html, body, figure, figcaption, ul, li, h1, div.game-over button {
   margin: 0;
   padding: 0;
   border: 0;
@@ -53,6 +53,7 @@ ul.grid > li.snake-segment1 {
   position: absolute;
   right: 30px;
   top: 50px;
+  z-index: 5;
 }
 
 .score-board1 {
@@ -88,6 +89,39 @@ ul.grid > li.snake-apple {
   transition: opacity .1s;
 }
 
+div.game-over-modal {
+  position: absolute;
+  width: 100%;
+  top: 200px;
+}
+
+div.game-over {
+  background: #aaa;
+  margin: 0 auto;
+  width: 200px;
+  padding: 10px 20px;
+  border-radius: 2px;
+  border: 2px solid black;
+}
+
+div.game-over * {
+  opacity: 1;
+}
+
+div.game-over > button {
+  background: #aa7243;
+  padding: 3px 10px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: normal;
+  cursor: pointer;
+  margin: 3px;
+}
+
+div.game-over > button:active {
+  background: #7a5230;
+}
+
 div.challenge-modal,
 div.splash-modal {
   display: none;
@@ -96,6 +130,7 @@ div.splash-modal {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 1000;
 }
 
 div.modal-screen {

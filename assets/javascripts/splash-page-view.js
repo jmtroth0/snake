@@ -4,7 +4,8 @@
   var SplashPageView = window.SnakeGame.SplashPageView = function ($rootEl) {
     this.$rootEl = $rootEl;
     this.$rootEl.on("click", 'button#single-player',
-      this.initializeGame.bind(this, {numSnakes: 1}));
+      this.initializeGame.bind(this, {numSnakes: 1})
+    );
     this.$rootEl.on("click", 'button#vs-game',
       this.initializeGame.bind(this, {numSnakes: 2})
     );
