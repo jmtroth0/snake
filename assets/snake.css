@@ -1,4 +1,4 @@
-html, body, figure, figcaption, ul, li, h1, div.game-over button {
+html, body, figure, figcaption, ul, li, h1, button {
   margin: 0;
   padding: 0;
   border: 0;
@@ -21,6 +21,27 @@ body {
   text-align: center;
   font-weight: bold;
   background: #ccc;
+}
+
+button {
+  background: #2F4F4F;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 4px 7px;
+  cursor: pointer;
+  outline: 0;
+}
+
+button#cancel {
+  background: #ABABAB;
+  color: black;
+  border: 1px solid black;
+}
+
+button:active {
+  background: #1c2f2f;
 }
 
 div.snake-game {
@@ -141,11 +162,6 @@ div.game-over * {
 
 div.game-over > button {
   background: #aa7243;
-  padding: 3px 10px;
-  border-radius: 2px;
-  font-size: 12px;
-  font-weight: normal;
-  cursor: pointer;
   margin: 3px;
 }
 
@@ -162,6 +178,10 @@ div.splash-modal {
   right: 0;
   bottom: 0;
   z-index: 1000;
+}
+
+.hidden {
+  display: none;
 }
 
 div.modal-screen {
@@ -186,11 +206,9 @@ div.modal-content {
 }
 
 div.modal-form {
-  background: white;
   width: 70%;
   margin: 0 auto;
   padding: 5px 0;
-  border: 1px solid #ccc;
 }
 
 input#challenge {
