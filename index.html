@@ -38,14 +38,42 @@
         <div class="modal-content">
           <h2>"P" to pause and start the game, arrow keys to play red, wasd to play blue</h2>
           <div class='modal-form'>
-            <button id="single-player">Single Player</button>
-            <button id="vs-game">PvP</button>
-            <button id="vs-comp">PvC</button>
-            <button id="pvcvc-game">PvCvC</button>
-            <button id="pvpvp-game">PvPvP</button>
-            <button id="screensaver1">Screen Saver Mode 1p</button>
-            <button id="screensaver2">Screen Saver Mode 2p</button>
-            <button id="screensaver3">Screen Saver Mode 3p</button>
+            <button id="single-player" class="front">Single Player</button>
+            <button id="versus" class="front nav">Versus</button>
+            <button id="screensavers" class="front nav">Screen Saver Mode</button>
+            <button
+              class="versus init hidden"
+              data-num-comps="0"
+              data-num-players="2">PvP</button>
+            <button
+              class="versus init hidden"
+              data-num-comps="1"
+              data-num-players="2">PvC</button>
+            <button
+              class="versus init hidden"
+              data-num-comps="2"
+              data-num-players="3">PvCvC</button>
+            <button
+              class="versus init hidden"
+              data-num-comps="1"
+              data-num-players="3">PvPvC</button>
+            <button
+              class="versus init hidden"
+              data-num-comps="0"
+              data-num-players="3">PvPvP</button>
+            <button
+              class="screensavers init hidden"
+              data-num-comps="1"
+              data-num-players="1">Screen Saver Mode 1p</button>
+            <button
+              class="screensavers init hidden"
+              data-num-comps="2"
+              data-num-players="2">Screen Saver Mode 2p</button>
+            <button
+              class="screensavers init hidden"
+              data-num-comps="3"
+              data-num-players="3">Screen Saver Mode 3p</button>
+            <button id="front" class="hidden">Back</button>
           </div>
         </div>
         <div class="modal-screen"></div>
